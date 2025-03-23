@@ -56,9 +56,7 @@ class HomeFragment : Fragment() {
 
             }
         }
-
     }
-
 
     fun initViews() {
         binding.categoryRv.layoutManager = GridLayoutManager(
@@ -68,14 +66,12 @@ class HomeFragment : Fragment() {
 
         binding.onSaleRv.layoutManager = GridLayoutManager(
             requireContext(),
-            2, GridLayoutManager.VERTICAL, false
+            2, GridLayoutManager.HORIZONTAL, false
         )
         productAdapter = ProductAdapter()
         binding.onSaleRv.adapter = productAdapter
 
-
     }
-
     private suspend fun initBanner() {
         binding.progressBarSlider.visibility = View.VISIBLE
         viewModel.banners.collect {

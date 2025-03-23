@@ -2,8 +2,6 @@ package dev.mo.surfcart.products.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.mo.surfcart.core.entity.Product
@@ -12,10 +10,10 @@ import dev.mo.surfcart.databinding.ItemProduct1Binding
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     lateinit var productItemBinding: ItemProduct1Binding
 
-    private var tasks = listOf<Product>()
+    private var products = listOf<Product>()
 
-    fun submitList(newTasks: List<Product>) {
-        tasks = newTasks
+    fun submitList(products: List<Product>) {
+        this.products = products
         notifyDataSetChanged() // Use DiffUtil in production for efficiency
     }
 
@@ -26,11 +24,11 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.bind(tasks[position])
+        holder.bind(products[position])
 
     }
 
-    override fun getItemCount() = tasks.size
+    override fun getItemCount() = products.size
 
     class ProductViewHolder(itemView: ItemProduct1Binding) : RecyclerView.ViewHolder(itemView.root) {
         val binding=itemView

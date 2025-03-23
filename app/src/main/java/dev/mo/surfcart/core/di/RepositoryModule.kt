@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.mo.surfcart.core.repository.ProductRepositoryImpl
 import dev.mo.surfcart.core.repository.ProductRepository
-import dev.mo.surfcart.registration.usecase.AuthRepoImpl
-import dev.mo.surfcart.registration.usecase.AuthRepository
+import dev.mo.surfcart.registration.data.AuthRepoImpl
+import dev.mo.surfcart.registration.data.AuthRepository
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import javax.inject.Singleton
@@ -31,7 +31,7 @@ object RepositoryModule {
     @Singleton
     fun provideAuthRepository(
         postgres:Auth,
-    ): AuthRepository{
+    ): AuthRepository {
         return AuthRepoImpl(
             postgres
         )

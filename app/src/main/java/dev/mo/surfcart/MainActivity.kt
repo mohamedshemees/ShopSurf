@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.ActivityMainBinding
-import dev.mo.surfcart.registration.ui.RegisterationFragment
 
 
 @AndroidEntryPoint
@@ -23,8 +22,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
-
-
 
         initViews()
     }

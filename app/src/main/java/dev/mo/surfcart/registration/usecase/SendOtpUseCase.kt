@@ -1,5 +1,6 @@
 package dev.mo.surfcart.registration.usecase
 
+import dev.mo.surfcart.registration.data.AuthRepository
 import javax.inject.Inject
 
 class SendOtpUseCase @Inject constructor(

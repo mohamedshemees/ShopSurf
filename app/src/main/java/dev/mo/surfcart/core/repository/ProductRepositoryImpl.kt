@@ -3,21 +3,21 @@ package dev.mo.surfcart.core.repository
 import android.util.Log
 import dev.mo.surfcart.core.dto.CategoryDto
 import dev.mo.surfcart.core.dto.ParentCategoryMapper.toCategory
-import dev.mo.surfcart.core.entity.Product
-import dev.mo.surfcart.core.dto.ProductMapper.toProduct
 import dev.mo.surfcart.core.dto.ProductDto
+import dev.mo.surfcart.core.dto.ProductMapper.toProduct
 import dev.mo.surfcart.core.entity.Category
+import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.core.entity.banner
 import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.storage.Storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
-)
-    : ProductRepository {
+) : ProductRepository {
     override suspend fun getTopLevelCategories(): List<Category> {
         return withContext(Dispatchers.IO) {
             postgrest.from("category")
@@ -48,36 +48,40 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getProductsByCategory(categoryId: Long): List<Product> {
-        Log.d("wow","getProductsByCategory repo  ")
+    override suspend fun getAllProductsofCategory(categoryId: Long): List<Product> {
+        Log.d("wow", "getProductsByCategory repo  ")
         return withContext(Dispatchers.IO) {
-            postgrest.from("product")
-                .select()
+            postgrest.rpc(
+                "get_products_by_parent_category",  // SQL function name
+                JsonObject(mapOf("parent_id" to JsonPrimitive(categoryId)))
+            )
                 .decodeList<ProductDto>()
-                .filter { it.categoryId == categoryId }
                 .map { it.toProduct() }
-
         }
     }
 
-    override suspend fun getAllProducts(): List<Product> {
+
+    override suspend fun getProductsByCategory(categoryId: Long): List<Product> {
         return withContext(Dispatchers.IO) {
-            postgrest.from("product")
-                .select()
+            postgrest.rpc(
+                "get_products_by_sup_category",
+                JsonObject(mapOf("category_1id" to JsonPrimitive(categoryId)))
+            )
                 .decodeList<ProductDto>()
                 .map { it.toProduct() }
         }
+
     }
 
     override suspend fun getBanners(): List<String> {
-        return  postgrest.from("banner")
+        return postgrest.from("banner")
             .select()
             .decodeList<banner>()
             .map { it.url }
     }
 
     override suspend fun getOnSaleroducts(): List<Product> {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             postgrest.from("product")
                 .select()
                 .decodeList<ProductDto>()

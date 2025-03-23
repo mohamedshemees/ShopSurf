@@ -1,4 +1,4 @@
-package dev.mo.surfcart.registration.ui.data.model
+package dev.mo.surfcart.registration.data.model
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

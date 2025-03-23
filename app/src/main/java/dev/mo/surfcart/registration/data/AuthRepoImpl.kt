@@ -1,4 +1,4 @@
-package dev.mo.surfcart.registration.usecase
+package dev.mo.surfcart.registration.data
 
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType

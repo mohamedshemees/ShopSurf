@@ -9,7 +9,10 @@ class GetProductsBySubCategoryUseCase @Inject constructor(
 ) {
 
     suspend fun invoke(categoryId: Long): List<Product> {
-        return productRepository.getProductsByCategory(categoryId)
-
+        return  productRepository.getAllProductsofCategory(categoryId)
 }
+    suspend fun getProductsOfSupCategory(categoryId: Long): List<Product> {
+        return productRepository.getProductsByCategory(categoryId)
+    }
+
 }

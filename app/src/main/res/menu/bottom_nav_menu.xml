@@ -9,7 +9,7 @@
         >
     </item>
     <item
-        android:id="@+id/wishlistFragment"
+        android:id="@+id/categoryFragment"
         android:icon="@drawable/ic_category_selector"
         android:title="Categories">
     </item>

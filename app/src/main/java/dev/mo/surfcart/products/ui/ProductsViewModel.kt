@@ -9,52 +9,47 @@ import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.products.usecase.GetProductsBySubCategoryUseCase
 import dev.mo.surfcart.products.usecase.GetSubCategoriesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel@Inject constructor(
-    private val getSubCategoriesUseCase: GetSubCategoriesUseCase,
-    private val getProductsUseCase: GetProductsBySubCategoryUseCase
-
-
-): ViewModel(){
-
-
-    var parentCategory =-1L
-
-    private var _products= MutableStateFlow(listOf<Product>())
+class ProductsViewModel @Inject constructor(
+    private val getProductsUseCase: GetProductsBySubCategoryUseCase,
+    private val getSubCategoriesUseCase: GetSubCategoriesUseCase
+) : ViewModel() {
+    private var _products = MutableStateFlow(listOf<Product>())
     val products = _products
-
+    private var _filteredProducts = MutableStateFlow(listOf<Product>())
+    val filteredProducts = _filteredProducts
 
     private val _categories = MutableStateFlow(listOf<Category>())
-    val categories= _categories
+    val categories = _categories
 
     private val _selectedCategoryId = MutableStateFlow(-1L) // Default to "All"
-    val selectedCategoryId= _selectedCategoryId
+    val selectedCategoryId = _selectedCategoryId
 
-    init {
-       loadCategories(parentCategory)
-        loadProducts(parentCategory) // Initial load: all products
-    }
+    var parentCategory = -1L
 
-     fun loadCategories(parentId: Long) {
+    fun loadCategories(parentId: Long) {
+
         viewModelScope.launch {
             _categories.value = getSubCategoriesUseCase.invoke(parentId)
+            _products.value = getProductsUseCase.invoke(parentCategory)
+
         }
     }
 
     fun selectCategory(categoryId: Long) {
         _selectedCategoryId.value = categoryId
-        loadProducts(categoryId)
-    }
-
-     fun loadProducts(categoryId: Long) {
         viewModelScope.launch {
-            _products.value = getProductsUseCase.invoke(categoryId)
-            Log.d("wow","loadproducts viewmodel ")
+            if (categoryId == -1L) {
+                _products.value = getProductsUseCase.invoke(parentCategory)
+            } else {
+                _products.value = getProductsUseCase.getProductsOfSupCategory(categoryId)
+            }
+            Log.d("wow", "loadproducts viewmodel $categoryId")
         }
     }
+
 }
 

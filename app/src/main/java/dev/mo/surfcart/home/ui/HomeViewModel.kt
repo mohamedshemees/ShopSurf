@@ -29,17 +29,14 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            loadBanners()
             getParentCategories()
             getOnSaleProducts()
-            loadBanners()
         }
-
     }
     private suspend fun getOnSaleProducts() {
         _onSaleProducts.value = getOnSaleProductsUseCase.getOnSaleProducts()
     }
-
-
     private suspend fun getParentCategories() {
         _parentCategories.value = getParentCategories.invoke()
     }

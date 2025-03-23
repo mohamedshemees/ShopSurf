@@ -17,7 +17,6 @@ class SliderApapter(private var slideritems:List<String>,
     : RecyclerView.Adapter<SliderApapter.SliderViewholder>(){
         private lateinit var context:Context
         private val runnable= Runnable {
-            slideritems=slideritems
             notifyDataSetChanged()
         }
 
@@ -44,7 +43,6 @@ class SliderApapter(private var slideritems:List<String>,
         fun setImage(sliderItems:String,context: Context){
             Glide.with(context)
                 .load(sliderItems)
-                .apply { RequestOptions.centerInsideTransform() }
                 .into(binding.imagSlide)
 
         }

@@ -29,7 +29,9 @@
 
     </fragment>
 
-    <fragment android:id="@+id/wishlistFragment"
+    <fragment android:id="@+id/categoryFragment"
+        android:name="dev.mo.surfcart.categories.ui.CategoriesFragment"
+
         />
 
 

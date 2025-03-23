@@ -8,7 +8,7 @@ interface ProductRepository {
     suspend fun getFeaturedProducts(): List<Product>
     suspend fun getSubCategories(parentId: Long): List<Category>
     suspend fun getProductsByCategory(categoryId: Long): List<Product>
-    suspend fun getAllProducts(): List<Product>
+    suspend fun getAllProductsofCategory(categoryId: Long): List<Product>
     suspend fun getBanners(): List<String>
     suspend fun getOnSaleroducts(): List<Product>
 
