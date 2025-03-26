@@ -21,7 +21,10 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
-    lateinit var productAdapter: ProductAdapter
+    lateinit var onSaleProductsAdapter: ProductAdapter
+    lateinit var categoryAdapter: CategoryAdapter
+    lateinit var categoriesRecyclerView: RecyclerView
+    lateinit var onSaleproductsRecyclerView: RecyclerView
 
 
     override fun onCreateView(
@@ -38,38 +41,46 @@ class HomeFragment : Fragment() {
         initViews()
 
         lifecycleScope.launch {
+
             initBanner()
+
         }
         lifecycleScope.launch {
             viewModel.parentCategories.collect { categories ->
-                binding.categoryRv.adapter = CategoryAdapter(categories) {
-                    val action = HomeFragmentDirections
-                        .actionHomeFragmentToProductsFragment(categoryId = it.id.toLong())
-                    findNavController().navigate(action)
-
+                categoryAdapter.submitList(categories)
                 }
-            }
         }
         lifecycleScope.launch {
             viewModel.onSaleProducts.collect { categories ->
-                productAdapter.submitList(categories)
+                onSaleProductsAdapter.submitList(categories)
 
             }
         }
     }
 
     fun initViews() {
-        binding.categoryRv.layoutManager = GridLayoutManager(
+        categoriesRecyclerView=binding.categoryRv
+        categoryAdapter=CategoryAdapter {
+            val action = HomeFragmentDirections
+                .actionHomeFragmentToProductsFragment(it)
+            findNavController().navigate(action)
+        }
+        categoriesRecyclerView.layoutManager = GridLayoutManager(
             requireContext(),
             2, GridLayoutManager.HORIZONTAL, false
         )
 
-        binding.onSaleRv.layoutManager = GridLayoutManager(
+        onSaleproductsRecyclerView=binding.onSaleRv
+        onSaleproductsRecyclerView .layoutManager = GridLayoutManager(
             requireContext(),
             2, GridLayoutManager.HORIZONTAL, false
         )
-        productAdapter = ProductAdapter()
-        binding.onSaleRv.adapter = productAdapter
+        binding.categoryRv.adapter = categoryAdapter
+
+        onSaleProductsAdapter = ProductAdapter()
+        binding.onSaleRv.adapter = onSaleProductsAdapter
+
+
 
     }
     private suspend fun initBanner() {

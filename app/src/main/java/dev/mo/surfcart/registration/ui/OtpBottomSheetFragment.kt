@@ -68,7 +68,6 @@ class OtpBottomSheetFragment(private val onVerified: () -> Unit) : BottomSheetDi
 
             RegistrationUiState.OtpResent,RegistrationUiState.OtpSent ->{
                 registrationViewModel.verifyOtp(input)
-
             }
             RegistrationUiState.OtpVerified ->{
 

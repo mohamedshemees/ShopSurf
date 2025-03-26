@@ -2,7 +2,6 @@ package dev.mo.surfcart.categories.ui
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
-import com.google.android.material.carousel.FullScreenCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentCategoriesBinding
+import dev.mo.surfcart.home.ui.CategoryAdapter
 import dev.mo.surfcart.products.ui.ProductAdapter
 import kotlinx.coroutines.launch
 
@@ -27,7 +26,7 @@ class CategoriesFragment : Fragment() {
     private lateinit var carouselRecyclerView: RecyclerView
     private lateinit var supCategoriesRecyclerView: RecyclerView
     private lateinit var productsRecyclerView: RecyclerView
-    private lateinit var carouselAdapter: CalouselCategoriesAdapter
+    private lateinit var carouselAdapter: CarouselCategoriesAdapter
     private lateinit var snapHelper: CarouselSnapHelper
     private lateinit var subCategoriesAdapter: CategoryAdapter
     private lateinit var productAdapter: ProductAdapter
@@ -47,20 +46,17 @@ class CategoriesFragment : Fragment() {
         initViews()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            categoriesViewModel.parentCategories.collect { categories ->
-                Log.d("wow", "Collecting parent categories: $categories")
-                carouselAdapter.submitList(categories)
-            }
+                categoriesViewModel.parentCategories.collect { categories ->
+                    carouselAdapter.submitList(categories)
+                }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             categoriesViewModel.subCategories.collect { subCategories ->
-                Log.d("wow", "Collecting subcategories: $subCategories")
                 subCategoriesAdapter.submitList(subCategories)
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             categoriesViewModel.products.collect { products ->
-                Log.d("wow","Collecting products: $products")
                 productAdapter.submitList(products)
             }
         }
@@ -68,16 +64,21 @@ class CategoriesFragment : Fragment() {
 
     private fun initViews() {
         carouselRecyclerView = binding.carouselRecyclerView
-        carouselRecyclerView.layoutManager = CarouselLayoutManager(FullScreenCarouselStrategy())
-        snapHelper = CarouselSnapHelper()
-        snapHelper.attachToRecyclerView(carouselRecyclerView)
-        carouselAdapter = CalouselCategoriesAdapter()
-        carouselRecyclerView.adapter = carouselAdapter
+        carouselRecyclerView.layoutManager = CarouselLayoutManager()
 
-        binding.categoryRv.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
-        subCategoriesAdapter = CategoryAdapter{
-
+        carouselAdapter = CarouselCategoriesAdapter {
+            categoriesViewModel.loadSubCategories(it.toLong())
         }
+        carouselRecyclerView.adapter = carouselAdapter
+        carouselAdapter.snapHelperCallback.attachToRecyclerView(carouselRecyclerView)
+
+        supCategoriesRecyclerView=binding.categoryRv
+
+        supCategoriesRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
+        subCategoriesAdapter = CategoryAdapter{
+            categoriesViewModel.loadProducts(it)
+        }
+
         binding.categoryRv.adapter = subCategoriesAdapter
 
         productAdapter = ProductAdapter()
