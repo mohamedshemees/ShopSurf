@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class OtpBottomSheetFragment(private val onVerified: () -> Unit) : BottomSheetDialogFragment() {
     private var _binding: FragmentOtpBottomSheetBinding? = null
     val binding get() = _binding!!
-    val registrationViewModel: RegisterationViewModel by viewModels()
+    private val registrationViewModel: RegisterationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,6 @@ class OtpBottomSheetFragment(private val onVerified: () -> Unit) : BottomSheetDi
             setupListeners()
         }
     }
-
 
 
     private fun setupListeners() {

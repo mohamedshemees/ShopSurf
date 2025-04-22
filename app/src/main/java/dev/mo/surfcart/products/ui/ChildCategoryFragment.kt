@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.FragmentChildcategoryBinding
+import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
 import dev.mo.surfcart.products.ui.ChipCategoriesAdapter
 import dev.mo.surfcart.products.ui.ProductAdapter
 import dev.mo.surfcart.products.ui.ProductsViewModel
@@ -35,7 +37,10 @@ class ChildCategoryFragment : Fragment() {
         val args: ChildCategoryFragmentArgs by navArgs()
         val categoryId = args.categoryId
         viewModel.parentCategory = categoryId
-        productAdapter = ProductAdapter()
+        productAdapter = ProductAdapter {
+            val action = ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(it)
+            findNavController().navigate(action)
+        }
         subCategoriesAdapter = ChipCategoriesAdapter(listOf()) {
             viewModel.selectCategory(it) // Load products when a chip is clicked
         }
@@ -58,7 +63,6 @@ class ChildCategoryFragment : Fragment() {
                 viewModel.products.collect { products ->
                     productAdapter.submitList(products)
                     allProducts = products
-                    Log.d("wow", products.toString())
                 }
             }
         }

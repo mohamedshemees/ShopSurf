@@ -3,10 +3,12 @@ package dev.mo.surfcart.core.repository
 import android.util.Log
 import dev.mo.surfcart.core.dto.CategoryDto
 import dev.mo.surfcart.core.dto.ParentCategoryMapper.toCategory
+import dev.mo.surfcart.core.dto.ProductDetailsDto
 import dev.mo.surfcart.core.dto.ProductDto
 import dev.mo.surfcart.core.dto.ProductMapper.toProduct
 import dev.mo.surfcart.core.entity.Category
 import dev.mo.surfcart.core.entity.Product
+import dev.mo.surfcart.core.entity.ProductDetails
 import dev.mo.surfcart.core.entity.banner
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +51,6 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllProductsofCategory(categoryId: Long): List<Product> {
-        Log.d("wow", "getProductsByCategory repo  ")
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
                 "get_products_by_parent_category",  // SQL function name
@@ -89,5 +90,27 @@ class ProductRepositoryImpl @Inject constructor(
                 .map { it.toProduct() }
         }
     }
+
+    override suspend fun getProductDetails(productId: Long): Map<String, String> {
+        val details = withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                "get_product_details_structured",
+                JsonObject(mapOf("p_product_id" to JsonPrimitive(1L))
+            )).decodeAs<ProductDetails>()
+        }
+
+        return details.properties
+    }
+
+    override suspend fun getProductInstanceDetails(productId: String): Product {
+        return withContext(Dispatchers.IO){
+            postgrest.from("product_instance")
+                .select()
+                .decodeAs<ProductDto>()
+                .toProduct()
+        }
+    }
+
+
 }
 

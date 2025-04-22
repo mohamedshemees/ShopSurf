@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.ItemProduct1Binding
 
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(val onCLick: (productId:Long) -> Unit) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     lateinit var productItemBinding: ItemProduct1Binding
 
     private var products = listOf<Product>()
@@ -25,6 +25,9 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bind(products[position])
+        holder.binding.root.setOnClickListener {
+            onCLick(products[position].productId)
+        }
 
     }
 
@@ -33,13 +36,13 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() 
     class ProductViewHolder(itemView: ItemProduct1Binding) : RecyclerView.ViewHolder(itemView.root) {
         val binding=itemView
 
+
         fun bind(product: Product) {
             binding.productName.text = product.productName
             binding.price.text = product.productPrice.toString()
             binding.productDescription.text = product.productDescription
             binding.rating.text = product.rating.toString()
             binding.afterSale.text = product.discountPrice.toString()
-
             Glide.with(binding.root)
                 .load(product.productThumbnail)
                 .placeholder(dev.mo.surfcart.R.drawable.heading)

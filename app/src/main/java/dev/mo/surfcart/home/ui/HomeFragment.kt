@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentHomeBinding
+import dev.mo.surfcart.product_details.ui.ProductDetailsFragment
+import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
 import dev.mo.surfcart.products.ui.ProductAdapter
 import kotlinx.coroutines.launch
 
@@ -58,7 +61,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun initViews() {
+    private fun initViews() {
         categoriesRecyclerView=binding.categoryRv
         categoryAdapter=CategoryAdapter {
             val action = HomeFragmentDirections
@@ -77,7 +80,10 @@ class HomeFragment : Fragment() {
         )
         binding.categoryRv.adapter = categoryAdapter
 
-        onSaleProductsAdapter = ProductAdapter()
+        onSaleProductsAdapter = ProductAdapter {
+            val action = ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(it)
+        findNavController().navigate(action)
+        }
         binding.onSaleRv.adapter = onSaleProductsAdapter
 
 

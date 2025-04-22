@@ -47,7 +47,6 @@ class ProductsViewModel @Inject constructor(
             } else {
                 _products.value = getProductsUseCase.getProductsOfSupCategory(categoryId)
             }
-            Log.d("wow", "loadproducts viewmodel $categoryId")
         }
     }
 

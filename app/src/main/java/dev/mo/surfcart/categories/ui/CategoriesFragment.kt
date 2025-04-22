@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.carousel.CarouselLayoutManager
@@ -14,6 +15,7 @@ import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentCategoriesBinding
 import dev.mo.surfcart.home.ui.CategoryAdapter
+import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
 import dev.mo.surfcart.products.ui.ProductAdapter
 import kotlinx.coroutines.launch
 
@@ -81,7 +83,11 @@ class CategoriesFragment : Fragment() {
 
         binding.categoryRv.adapter = subCategoriesAdapter
 
-        productAdapter = ProductAdapter()
+        productAdapter = ProductAdapter {
+            val action = ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+
         binding.productsRv.adapter = productAdapter
         binding.productsRv.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
     }

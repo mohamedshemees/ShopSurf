@@ -28,6 +28,13 @@
             />
 
     </fragment>
+    <fragment android:id="@+id/productsDetailsFragment"
+        android:name="dev.mo.surfcart.product_details.ui.ProductDetailsFragment">
+        <argument android:name="productId"
+            app:argType="long"
+           />
+
+    </fragment>
 
     <fragment android:id="@+id/categoryFragment"
         android:name="dev.mo.surfcart.categories.ui.CategoriesFragment"
@@ -35,18 +42,18 @@
         />
 
 
-
-
     <fragment android:id="@+id/cartFragment"/>
 
 
     <fragment android:id="@+id/profileFragment"/>
 
-
     <fragment android:id="@+id/registrationFragment"
         android:name="dev.mo.surfcart.registration.ui.RegisterationFragment"
         />
 
-
+    <action
+        android:id="@+id/action_global_productDetailsFragment"
+        app:destination="@id/productsDetailsFragment"
+        />
 
 </navigation>
