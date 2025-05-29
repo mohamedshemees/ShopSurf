@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.mo.surfcart.cart.CartRepository
+import dev.mo.surfcart.cart.CartRepositoryImpl
 import dev.mo.surfcart.core.repository.ProductRepositoryImpl
 import dev.mo.surfcart.core.repository.ProductRepository
 import dev.mo.surfcart.registration.data.AuthRepoImpl
@@ -33,6 +35,15 @@ object RepositoryModule {
         postgres:Auth,
     ): AuthRepository {
         return AuthRepoImpl(
+            postgres
+        )
+    }
+    @Provides
+    @Singleton
+    fun provideCartRepository(
+        postgres:Postgrest,
+    ): CartRepository {
+        return CartRepositoryImpl(
             postgres
         )
     }

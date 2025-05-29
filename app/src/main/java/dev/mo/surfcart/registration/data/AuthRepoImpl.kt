@@ -14,6 +14,7 @@ class AuthRepoImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             supaAuth.signInWith(OTP){
                this.email = email
+
             }
 
         }
@@ -42,6 +43,10 @@ class AuthRepoImpl @Inject constructor(
             }
 
         }
+    }
+
+    override suspend fun getCurrentUser(): String {
+        return supaAuth.currentUserOrNull()?.id.toString()
     }
 
 

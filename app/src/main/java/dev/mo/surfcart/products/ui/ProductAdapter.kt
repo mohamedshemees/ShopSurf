@@ -35,8 +35,6 @@ class ProductAdapter(val onCLick: (productId:Long) -> Unit) : RecyclerView.Adapt
 
     class ProductViewHolder(itemView: ItemProduct1Binding) : RecyclerView.ViewHolder(itemView.root) {
         val binding=itemView
-
-
         fun bind(product: Product) {
             binding.productName.text = product.productName
             binding.price.text = product.productPrice.toString()

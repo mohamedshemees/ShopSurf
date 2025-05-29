@@ -8,4 +8,6 @@ interface AuthRepository {
 
     suspend fun resendOtp(email: String)
 
+    suspend fun getCurrentUser(): String
+
 }

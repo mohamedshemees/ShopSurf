@@ -6,9 +6,8 @@ import javax.inject.Inject
 
 class GetOnSaleProductsUseCase @Inject constructor(
     private val productRepository: ProductRepository
-)
-{
-        suspend fun getOnSaleProducts():List<Product>{
-            return productRepository.getOnSaleroducts()
-        }
+) {
+    suspend fun getOnSaleProducts(): List<Product> {
+        return productRepository.getOnSaleProducts()
+    }
 }

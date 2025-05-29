@@ -1,11 +1,10 @@
 package dev.mo.surfcart.product_details.usecase
 
 import dev.mo.surfcart.core.entity.Product
-import dev.mo.surfcart.core.entity.ProductDetails
 import dev.mo.surfcart.core.repository.ProductRepository
 import javax.inject.Inject
 
-class GetProductDetails @Inject constructor(
+class GetProductDetailsUseCase @Inject constructor(
     private val productRepository: ProductRepository
 
 ){

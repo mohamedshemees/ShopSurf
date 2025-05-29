@@ -1,15 +1,13 @@
 package dev.mo.surfcart.core.repository
 
-import android.util.Log
 import dev.mo.surfcart.core.dto.CategoryDto
 import dev.mo.surfcart.core.dto.ParentCategoryMapper.toCategory
-import dev.mo.surfcart.core.dto.ProductDetailsDto
 import dev.mo.surfcart.core.dto.ProductDto
 import dev.mo.surfcart.core.dto.ProductMapper.toProduct
 import dev.mo.surfcart.core.entity.Category
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.core.entity.ProductDetails
-import dev.mo.surfcart.core.entity.banner
+import dev.mo.surfcart.core.entity.Banner
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -50,7 +48,7 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllProductsofCategory(categoryId: Long): List<Product> {
+    override suspend fun getAllProductsOfCategory(categoryId: Long): List<Product> {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
                 "get_products_by_parent_category",  // SQL function name
@@ -77,11 +75,11 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getBanners(): List<String> {
         return postgrest.from("banner")
             .select()
-            .decodeList<banner>()
+            .decodeList<Banner>()
             .map { it.url }
     }
 
-    override suspend fun getOnSaleroducts(): List<Product> {
+    override suspend fun getOnSaleProducts(): List<Product> {
         return withContext(Dispatchers.IO) {
             postgrest.from("product")
                 .select()
@@ -95,7 +93,7 @@ class ProductRepositoryImpl @Inject constructor(
         val details = withContext(Dispatchers.IO) {
             postgrest.rpc(
                 "get_product_details_structured",
-                JsonObject(mapOf("p_product_id" to JsonPrimitive(1L))
+                JsonObject(mapOf("p_product_id" to JsonPrimitive(productId))
             )).decodeAs<ProductDetails>()
         }
 
@@ -108,6 +106,17 @@ class ProductRepositoryImpl @Inject constructor(
                 .select()
                 .decodeAs<ProductDto>()
                 .toProduct()
+        }
+    }
+
+    override suspend fun getProductById(productId: Long): Product {
+        return withContext(Dispatchers.IO) {
+            postgrest.from("product")
+                .select()
+                .decodeList<ProductDto>()
+                .filter { it.productId == productId }
+                .map { it.toProduct() }
+                .first()
         }
     }
 
