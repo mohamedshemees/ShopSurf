@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
-import dev.mo.surfcart.cart.CartItemsAdapter
+import dev.mo.surfcart.cart.ui.CartItemsAdapter
 import dev.mo.surfcart.databinding.FragmentCartBinding
 import kotlinx.coroutines.launch
 
@@ -34,7 +34,7 @@ class CartFragment : Fragment() {
         cartItemRecyclerView=binding.cartRecyclerView
         cartItemRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         cartItemsAdapter = CartItemsAdapter(
-            onItemClick = { openProductDetails(it) },
+            onItemClick = ::openProductDetails,
             onItemRemove =  cartViewModel::removeFromCart ,
             onItemIncrement =  cartViewModel::increaseQuantity ,
             onItemDecrement =  cartViewModel::decreaseQuantity
@@ -51,7 +51,6 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartItems.collect{

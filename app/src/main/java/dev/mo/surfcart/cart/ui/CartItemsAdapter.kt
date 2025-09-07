@@ -1,9 +1,11 @@
-package dev.mo.surfcart.cart
+package dev.mo.surfcart.cart.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import dev.mo.surfcart.R
+import dev.mo.surfcart.cart.CartItem
 import dev.mo.surfcart.databinding.ItemCartProductBinding
 
 class CartItemsAdapter(
@@ -11,7 +13,7 @@ class CartItemsAdapter(
     private val onItemRemove: (productId: Int) -> Unit,
     private val onItemIncrement: (productId: Int) -> Unit,
     private val onItemDecrement: (productId: Int) -> Unit
-):RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder>() {
+): RecyclerView.Adapter<CartItemsAdapter.CartItemsViewHolder>() {
     private val cartItems: List<CartItem> = mutableListOf()
     fun updateCartItems(newCartItems: List<CartItem>) {
         (cartItems as MutableList).clear()
@@ -45,17 +47,17 @@ class CartItemsAdapter(
 
     }
 
-    class CartItemsViewHolder(itemView: ItemCartProductBinding) :
+    class CartItemsViewHolder( itemView: ItemCartProductBinding) :
         RecyclerView.ViewHolder(itemView.root) {
         val binding = itemView
         fun bind(cartItem: CartItem) {
             binding.productName.text = cartItem.title
             binding.productDescription.text = cartItem.description
-            binding.productPrice.text = cartItem.price.toString()
+            binding.productPrice.text = cartItem.price.times( cartItem.quantity).toString()
             binding.productQuantity.text = cartItem.quantity.toString()
             Glide.with(binding.root)
                 .load(cartItem.imageUrl)
-                .placeholder(dev.mo.surfcart.R.drawable.heading)
+                .placeholder(R.drawable.heading)
                 .into(binding.productThumbnail)
 
         }
