@@ -13,7 +13,7 @@ import dev.mo.surfcart.databinding.ItemCategoryCategoryFragmentBinding
 
 
 class CarouselCategoriesAdapter(
-    private val onSnappedPosition: (Int) -> Unit  // Function to return category ID when snapped
+    private val onSnappedPosition: (Int) -> Unit
 ) : ListAdapter<Category, CarouselCategoriesAdapter.CarouselViewHolder>(DiffUtile()) {
 
     private var currentSnappedPosition = 0
@@ -40,7 +40,6 @@ class CarouselCategoriesAdapter(
         }
     }
 
-    // SnapHelper callback to track exactly when item snaps to position
     val snapHelperCallback = object : PagerSnapHelper() {
         override fun findTargetSnapPosition(
             layoutManager: RecyclerView.LayoutManager,
@@ -50,7 +49,6 @@ class CarouselCategoriesAdapter(
             val snappedPosition = super.findTargetSnapPosition(layoutManager, velocityX, velocityY)
             if (snappedPosition != RecyclerView.NO_POSITION && snappedPosition != currentSnappedPosition) {
                 currentSnappedPosition = snappedPosition
-                // Return the category ID of the snapped item
                 onSnappedPosition(getItem(snappedPosition).id)
             }
             return snappedPosition
@@ -79,50 +77,3 @@ class CarouselCategoriesAdapter(
         }
     }
 }
-
-//
-//
-//
-//class CalouselCategoriesAdapter(
-//    var onItemClick: (Int) -> Unit
-//) : ListAdapter<Category, CalouselCategoriesAdapter.CarouselViewHolder>(DiffUtile()) {
-//
-//    class CarouselViewHolder(var itemCategory: ItemCategoryCategoryFragmentBinding) :
-//        RecyclerView.ViewHolder(itemCategory.root) {
-//
-//        fun bind(cateogry: Category) {
-//            Glide.with(itemCategory.root)
-//                .load(cateogry.categoryThumbnail)
-//                .into(itemCategory.carouselImageView)
-//
-//            itemCategory.categoryTitle.text = cateogry.name
-//        }
-//    }
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
-//        val binding = ItemCategoryCategoryFragmentBinding.inflate(
-//            LayoutInflater.from(parent.context),
-//            parent,
-//            false
-//        )
-//        return CarouselViewHolder(binding)
-//    }
-//
-//    override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
-//        val cateogry = getItem(position)
-//        holder.bind(cateogry)
-//
-//            onItemClick(cateogry.id)
-//
-//    }
-//
-//    class DiffUtile : DiffUtil.ItemCallback<Category>() {
-//        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-//            return oldItem.id == newItem.id
-//        }
-//
-//        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
-//            return oldItem == newItem
-//        }
-//    }
-//}

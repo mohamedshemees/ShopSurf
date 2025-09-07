@@ -5,5 +5,4 @@ data class Category(
     val name: String,
     val parentId: Long?,
     val categoryThumbnail: String,
-
     )

@@ -42,7 +42,7 @@ class ChildCategoryFragment : Fragment() {
             findNavController().navigate(action)
         }
         subCategoriesAdapter = ChipCategoriesAdapter(listOf()) {
-            viewModel.selectCategory(it) // Load products when a chip is clicked
+            viewModel.selectCategory(it)
         }
         viewModel.loadCategories(categoryId)
 

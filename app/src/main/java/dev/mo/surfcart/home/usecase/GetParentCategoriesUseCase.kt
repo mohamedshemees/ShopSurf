@@ -8,7 +8,7 @@ class GetParentCategoriesUseCase @Inject constructor(
     private val productRepository: ProductRepository
 ){
 
-    suspend fun invoke(): List<Category> {
+    suspend operator fun  invoke(): List<Category> {
       return  productRepository.getTopLevelCategories()
     }
 

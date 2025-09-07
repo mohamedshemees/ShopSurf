@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/md_theme_surfaceContainer"
-    >
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+    android:gravity="center"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="14dp"
-        android:layout_gravity="center"
-        android:text="Homeand "
-        app:layout_constraintBottom_toTopOf="@id/category_image"
-        />
-
-    <ImageView
+        android:layout_marginBottom="6dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        tools:text="Home and Kitchen" />
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/category_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-    </LinearLayout>
+        app:shapeAppearanceOverlay="@style/CategoryImageShape"
+        tools:ignore="ContentDescription" />
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>
+
