@@ -1,5 +1,6 @@
 package dev.mo.surfcart.registration.data
 
+import android.util.Log
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.providers.builtin.OTP
@@ -8,14 +9,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AuthRepoImpl @Inject constructor(
-    private val supaAuth:Auth
+    private val supaAuth: Auth
 ) : AuthRepository {
     override suspend fun sendOtp(email: String) {
         withContext(Dispatchers.IO) {
-            supaAuth.signInWith(OTP){
-               this.email = email
-
+           val test=supaAuth.signInWith(OTP) {
+                this.email = email
             }
+            supaAuth
 
         }
     }
@@ -23,11 +24,10 @@ class AuthRepoImpl @Inject constructor(
     override suspend fun verifyOtp(email: String, otp: String): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                supaAuth.verifyEmailOtp(
-                    email = email,
-                    token = otp,
-                    type = OtpType.Email.EMAIL
+              supaAuth.verifyEmailOtp(
+                    email = email, token = otp, type = OtpType.Email.EMAIL
                 )
+
                 true
             } catch (e: Exception) {
                 false
@@ -37,9 +37,9 @@ class AuthRepoImpl @Inject constructor(
 
     override suspend fun resendOtp(email: String) {
         withContext(Dispatchers.IO) {
-            supaAuth.signInWith(OTP){
+            supaAuth.signInWith(OTP) {
                 this.email = email
-                createUser= false
+                createUser = false
             }
 
         }
@@ -48,6 +48,4 @@ class AuthRepoImpl @Inject constructor(
     override suspend fun getCurrentUser(): String {
         return supaAuth.currentUserOrNull()?.id.toString()
     }
-
-
 }

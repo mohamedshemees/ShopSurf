@@ -1,9 +1,11 @@
 package dev.mo.surfcart.registration.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mo.surfcart.registration.usecase.SendOtpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +20,11 @@ class RegisterationViewModel @Inject constructor(
     val uiState = _uiState
 
 
-
+    init {
+        viewModelScope.launch {
+            sendOtpUseCase.getCurrentUser()
+        }
+    }
     private var email: String? = null
 
     suspend fun sendOtp(email: String) {
@@ -28,7 +34,7 @@ class RegisterationViewModel @Inject constructor(
         }
         this.email = email
         try {
-            sendOtpUseCase.sendOtp(email) // Suspend call
+            sendOtpUseCase.sendOtp(email)
             _uiState.value = RegistrationUiState.OtpSent
         } catch (e: Exception) {
             _uiState.value = RegistrationUiState.Error("Failed to send OTP: ${e.message}")
@@ -38,7 +44,7 @@ class RegisterationViewModel @Inject constructor(
     suspend fun verifyOtp(otp: String) {
         email?.let { email ->
             try {
-                val success = sendOtpUseCase.verifyOtp(email, otp) // Suspend call
+                val success = sendOtpUseCase.verifyOtp(email, otp)
                 _uiState.value = if (success) {
                     RegistrationUiState.OtpVerified
                 } else {
@@ -55,7 +61,7 @@ class RegisterationViewModel @Inject constructor(
     suspend fun resendOtp() {
         email?.let { email ->
             try {
-                sendOtpUseCase.resendOtp(email) // Suspend call
+                sendOtpUseCase.resendOtp(email)
                 _uiState.value = RegistrationUiState.OtpResent
             } catch (e: Exception) {
                 _uiState.value = RegistrationUiState.Error("Failed to resend OTP: ${e.message}")

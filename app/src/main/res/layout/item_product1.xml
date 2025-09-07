@@ -1,80 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:background="@drawable/product_card_background"
+    android:paddingBottom="10dp">
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@color/md_theme_surfaceContainer"
-        >
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/product_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@color/lightGray"
-            />
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mosalah"
+            app:shapeAppearanceOverlay="@style/OvalImageShape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/sale_percentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/sale_background"
+            android:paddingHorizontal="4dp"
             android:text="20%"
-            android:background="@color/md_theme_primaryContainer"
-            android:layout_gravity="end"
-            />
-    </androidx.cardview.widget.CardView>
+            style="@style/Text.Small"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/product_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="product name"
-            android:maxLines="1"
-            android:textColor="@color/md_theme_primary"
             android:ellipsize="end"
-            />
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="EGP 3506"
-            android:textColor="@color/black"
+            android:maxLines="1"
+            android:text="product name"
+            style="@style/Text.Medium"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_thumbnail"/>
 
-            />
-        <TextView
-            android:id="@+id/after_sale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="EGP 3200"
-            />
-        <TextView
-            android:id="@+id/rating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="rating"
-            />
         <TextView
             android:id="@+id/product_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="description"
-            />
+            android:maxLines="2"
+            android:ellipsize="end"
+            style="@style/Text.Small"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_name"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EGP 3506"
+            style="@style/Text.Medium"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_description"/>
 
+        <TextView
+            android:id="@+id/after_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EGP 3200"
+            style="@style/Text.Medium"
 
-</LinearLayout>
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/price"
+            app:layout_constraintTop_toTopOf="@id/price"/>
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rating"
+            style="@style/Text.Small"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

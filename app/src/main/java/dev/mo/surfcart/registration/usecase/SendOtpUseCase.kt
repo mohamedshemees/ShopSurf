@@ -18,6 +18,9 @@ class SendOtpUseCase @Inject constructor(
     suspend fun resendOtp(email: String) {
         authRepository.resendOtp(email)
     }
+    suspend fun getCurrentUser(): String {
+       return authRepository.getCurrentUser()
+    }
 
 
 }

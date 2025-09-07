@@ -42,9 +42,10 @@ object RepositoryModule {
     @Singleton
     fun provideCartRepository(
         postgres:Postgrest,
+        auth:Auth
     ): CartRepository {
         return CartRepositoryImpl(
-            postgres
+            postgres, auth
         )
     }
 
