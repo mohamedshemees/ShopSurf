@@ -43,16 +43,14 @@ class OtpBottomSheetFragment(
     }
 
     private fun setupListeners() {
-        // Assuming your TextInputEditText is R.id.etOtp and TextInputLayout is R.id.tilOtp
         binding.etOtp.doAfterTextChanged {
-            // Clear error when user starts typing
             if (binding.etOtp.error != null) {
                 binding.etOtp.error = null
             }
-            // You could also call viewModel.clearError() here if needed
+
         }
 
-        // Assuming your "Verify OTP" button in XML is R.id.btnVerifyOtp
+
         binding.btnVerifyOtp.setOnClickListener {
             val otpInput = binding.etOtp.text.toString().trim()
             viewModel.verifyOtp(email,otpInput)

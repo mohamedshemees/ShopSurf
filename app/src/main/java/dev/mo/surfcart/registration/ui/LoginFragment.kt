@@ -20,18 +20,14 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
-    private var _binding: FragmentLogInBinding? = null // Replace with your actual binding class
-    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: FragmentLogInBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLogInBinding.inflate(inflater, container, false) // Replace with your actual binding class
-        // If you have navigation arguments for LogInFragment, handle them here:
-        // val args: LogInFragmentArgs by navArgs()
-        // viewModel.setInitialData(args.someData) // Example
+        _binding = FragmentLogInBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,9 +40,8 @@ class LoginFragment : Fragment() {
 
     private fun initCallBacks() {
         binding.apply {
-            // 🔹 Log In Button (assuming you have btnLogin)
-            btnLogin.setOnClickListener { // Replace with your Button ID
-                viewModel.onLoginClicked() // Assuming LogInViewModel has this method
+            btnLogin.setOnClickListener {
+                viewModel.onLoginClicked()
             }
 
              tvForgetPassword.setOnClickListener {

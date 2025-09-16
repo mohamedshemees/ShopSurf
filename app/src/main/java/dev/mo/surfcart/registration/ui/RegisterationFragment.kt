@@ -84,11 +84,9 @@ class RegistrationFragment : Fragment() {
                                         data.password == data.confirmPassword // Ensure passwords match for enabling
                         }
                         is RegistrationUiState.OtpSent -> {
-                            Log.d("RegistrationFragment", "OtpSent state received. Showing bottom sheet.")
                             val otpBottomSheetFragment = OtpBottomSheetFragment.newInstance(
                                 email = state.email,
                                 onVerifiedSuccessfully = {
-                                    Log.d("RegistrationFragment", "OtpBottomSheetFragment.onVerifiedSuccessfully called.")
                                     navigateToBoarding()
                                 }
                             )
@@ -96,12 +94,10 @@ class RegistrationFragment : Fragment() {
                         }
 
                         is RegistrationUiState.Error -> {
-                            Log.d("RegistrationFragment", "Error state received: ${state.message}")
                             Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT)
                                 .show()
                         }
                         RegistrationUiState.Loading -> {
-                            Log.d("RegistrationFragment", "Loading state received.")
                         }
 
                     }

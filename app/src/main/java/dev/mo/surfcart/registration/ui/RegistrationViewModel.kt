@@ -46,7 +46,6 @@ class RegistrationViewModel @Inject constructor(
                         role = currentState.data.userType
                     )
                    _uiState.value= RegistrationUiState.OtpSent(email = currentState.data.email)
-                    Log.d("WOW", "onCreateAccountClicked: ")
                 } catch (e: Exception) {
                     Log.d("WOW", "Exception: ",e)
 

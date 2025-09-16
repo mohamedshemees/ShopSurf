@@ -13,7 +13,6 @@ class RegistrationBoardingFragment : Fragment() {
 
     private var _binding: FragmentRegistrationBoardingBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: RegistrationBoardingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

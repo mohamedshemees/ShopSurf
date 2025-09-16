@@ -48,7 +48,6 @@ class LoginViewModel @Inject constructor(
 
     fun onLoginClicked() {
         val currentState = _uiState.value
-        Log.e("LoginViewModel", "Login onLoginClicked")
         if (currentState is LogInUiState.FormInput) {
             val email = currentState.data.email
             val password = currentState.data.password
@@ -77,7 +76,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    // Basic email validation
     private fun isValidEmail(email: String): Boolean {
         return email.isNotBlank() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

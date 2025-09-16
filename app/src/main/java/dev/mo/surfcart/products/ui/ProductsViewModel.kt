@@ -24,7 +24,7 @@ class ProductsViewModel @Inject constructor(
     private val _categories = MutableStateFlow(listOf<Category>())
     val categories = _categories
 
-    private val _selectedCategoryId = MutableStateFlow(-1L) // Default to "All"
+    private val _selectedCategoryId = MutableStateFlow(-1L)
     val selectedCategoryId = _selectedCategoryId
 
     var parentCategory = -1L

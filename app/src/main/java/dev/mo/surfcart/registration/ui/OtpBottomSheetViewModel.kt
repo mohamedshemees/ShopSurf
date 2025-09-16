@@ -18,7 +18,6 @@ import javax.inject.Inject
         private val _uiState = MutableStateFlow<OtpSheetUiState>(OtpSheetUiState.Idle)
         val uiState: StateFlow<OtpSheetUiState> = _uiState
         fun verifyOtp(email:String,otp: String) {
-            // Basic client-side validation (can be enhanced)
             if (otp.length != 6 || !otp.all { it.isDigit() }) {
                 _uiState.value = OtpSheetUiState.Error("OTP must be 6 digits.")
                 return
@@ -27,19 +26,16 @@ import javax.inject.Inject
             viewModelScope.launch {
                 try {
                    val success = verifyOtpUseCase.verifyOtp( email,otp)
-                    Log.d("WOW", "verifyOtp: $success")
                     if (success) {
                         _uiState.value = OtpSheetUiState.OtpVerified
                     } else {
                         _uiState.value = OtpSheetUiState.Error("Invalid OTP. Please try again.")
                     }
                 } catch (e: Exception) {
-                    Log.d("WOW", "Exception: ",e)
                     _uiState.value = OtpSheetUiState.Error(e.message ?: "OTP verification failed.")
                 }
             }
         }
-
 
         fun clearError() {
             if (_uiState.value is OtpSheetUiState.Error) {
@@ -48,8 +44,8 @@ import javax.inject.Inject
         }
     }
 sealed class OtpSheetUiState {
-    data object Idle : OtpSheetUiState() // Initial state, ready for input
-    data object Loading : OtpSheetUiState() // Verification in progress
-    data object OtpVerified : OtpSheetUiState() // OTP successfully verified
+    data object Idle : OtpSheetUiState()
+    data object Loading : OtpSheetUiState()
+    data object OtpVerified : OtpSheetUiState()
     data class Error(val message: String) : OtpSheetUiState()
 }
