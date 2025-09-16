@@ -4,113 +4,93 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentOtpBottomSheetBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class OtpBottomSheetFragment(private val onVerified: () -> Unit) : BottomSheetDialogFragment() {
+class OtpBottomSheetFragment(
+    private val email:String,
+    private val onVerifiedSuccessfully: () -> Unit
+) : BottomSheetDialogFragment() {
+
     private var _binding: FragmentOtpBottomSheetBinding? = null
-    val binding get() = _binding!!
-    private val registrationViewModel: RegisterationViewModel by viewModels()
+    private val binding get() = _binding!!
+    private val viewModel: OtpBottomSheetViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOtpBottomSheetBinding.inflate(layoutInflater, container, false)
-
+        _binding = FragmentOtpBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
+        observeUiState()
 
-        lifecycleScope.launch {
-            observeViewModel()
-            setupListeners()
+
+        binding.etOtp.requestFocus()
+    }
+
+    private fun setupListeners() {
+        // Assuming your TextInputEditText is R.id.etOtp and TextInputLayout is R.id.tilOtp
+        binding.etOtp.doAfterTextChanged {
+            // Clear error when user starts typing
+            if (binding.etOtp.error != null) {
+                binding.etOtp.error = null
+            }
+            // You could also call viewModel.clearError() here if needed
+        }
+
+        // Assuming your "Verify OTP" button in XML is R.id.btnVerifyOtp
+        binding.btnVerifyOtp.setOnClickListener {
+            val otpInput = binding.etOtp.text.toString().trim()
+            viewModel.verifyOtp(email,otpInput)
         }
     }
 
-
-    private fun setupListeners() {
-        binding.sendotpBtn.setOnClickListener {
-            val input=binding.email.text.toString().trim()
-            viewLifecycleOwner.lifecycleScope.launch {
-                 handleAction(input,registrationViewModel.uiState.value)
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    updateUiForState(state)
                 }
             }
         }
-
-    private suspend fun handleAction(input: String, state: RegistrationUiState) {
-        if (input.isEmpty()){
-            binding.emaillayout.error =when (state){
-                RegistrationUiState.Default, is RegistrationUiState.Error ->"Email Cannot be empty"
-                RegistrationUiState.OtpSent, RegistrationUiState.OtpResent->"Otp Cannot be empty"
-                else-> null
-
-            }
-            return
-        }
-
-        when(state){
-            RegistrationUiState.Default, is RegistrationUiState.Error ->{
-                registrationViewModel.sendOtp(input)
-                binding.email.text?.clear()
-            }
-
-            RegistrationUiState.OtpResent,RegistrationUiState.OtpSent ->{
-                registrationViewModel.verifyOtp(input)
-            }
-            RegistrationUiState.OtpVerified ->{
-
-            }
-        }
-
-
-    }
-    private  fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            registrationViewModel.uiState.collectLatest{
-                updateUiForState(it)
-            }
-        }
     }
 
-    private fun configureInputAndButton(hint: String, buttonText: String, message: String) {
-        binding.emaillayout.hint = hint
-        binding.sendotpBtn.text = buttonText
-        binding.messageText.text = message
-    }
+    private fun updateUiForState(state: OtpSheetUiState) {
 
-    private fun updateUiForState(state: RegistrationUiState) {
-        binding.emaillayout.error = null
+        binding.btnVerifyOtp.isEnabled = state !is OtpSheetUiState.Loading
+        binding.etOtp.isEnabled = state !is OtpSheetUiState.Loading
+
         when (state) {
-            RegistrationUiState.Default -> {
-                configureInputAndButton("Enter Email", "Send OTP", "")
+            OtpSheetUiState.Idle -> {
+                binding.tilOtp.error = null
+                binding.btnVerifyOtp.text = "VERIFY"
             }
 
-            RegistrationUiState.OtpSent -> {
-                configureInputAndButton("Enter OTP", "Verify OTP", "OTP sent. Check your inbox!")
+            OtpSheetUiState.Loading -> {
+                binding.tilOtp.error = null
             }
 
-            RegistrationUiState.OtpResent -> {
-                configureInputAndButton("Enter OTP", "Verify OTP", "OTP resent successfully!")
+            OtpSheetUiState.OtpVerified -> {
+                onVerifiedSuccessfully()
+                dismissAllowingStateLoss()
             }
 
-            RegistrationUiState.OtpVerified -> {
-                binding.messageText.text = "Verification successful!"
-                dismiss()
-                onVerified()
-            }
-
-            is RegistrationUiState.Error -> {
+            is OtpSheetUiState.Error -> {
+                binding.tilOtp.error = state.message
             }
         }
     }
@@ -121,7 +101,9 @@ class OtpBottomSheetFragment(private val onVerified: () -> Unit) : BottomSheetDi
     }
 
     companion object {
-        fun newInstance(onVerified: () -> Unit) = OtpBottomSheetFragment(onVerified)
+        const val TAG = "OtpBottomSheetFragment"
+        fun newInstance(email:String,onVerifiedSuccessfully: () -> Unit): OtpBottomSheetFragment {
+            return OtpBottomSheetFragment(email,onVerifiedSuccessfully)
+        }
     }
 }
-

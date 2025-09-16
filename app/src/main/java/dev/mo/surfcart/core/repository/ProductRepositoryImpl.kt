@@ -4,10 +4,10 @@ import dev.mo.surfcart.core.dto.CategoryDto
 import dev.mo.surfcart.core.dto.ParentCategoryMapper.toCategory
 import dev.mo.surfcart.core.dto.ProductDto
 import dev.mo.surfcart.core.dto.ProductMapper.toProduct
+import dev.mo.surfcart.core.entity.Banner
 import dev.mo.surfcart.core.entity.Category
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.core.entity.ProductDetails
-import dev.mo.surfcart.core.entity.Banner
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

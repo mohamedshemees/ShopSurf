@@ -14,15 +14,12 @@ class RegistrationViewModel @Inject constructor(
     private val registrationUseCase: RegisterUseCase
 
 ) : ViewModel() {
-    private val _otpVerified = MutableStateFlow(false)
-    val otpVerified = _otpVerified
-
-    private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.Success())
+    private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.TakingInput())
     val uiState = _uiState
 
     private fun updateForm(transform: (CreateAccountUiState) -> CreateAccountUiState) {
         val current = _uiState.value
-        if (current is RegistrationUiState.Success) {
+        if (current is RegistrationUiState.TakingInput) {
             _uiState.value = current.copy(data = transform(current.data))
         }
     }
@@ -35,15 +32,12 @@ class RegistrationViewModel @Inject constructor(
     fun setUserType(userType: String) = updateForm { it.copy(userType = userType) }
 
     fun onCreateAccountClicked() {
-    Log.d("WOW", "onCreateAccountClicked: ")
         viewModelScope.launch {
+
             val currentState = _uiState.value
-            Log.d("WOW", "launc: ")
-
-            if (currentState is RegistrationUiState.Success) {
+            _uiState.value= RegistrationUiState.Loading
+            if (currentState is RegistrationUiState.TakingInput) {
                 try {
-                    Log.d("WOW", "try: ")
-
                     registrationUseCase(
                         name = currentState.data.name,
                         phone = currentState.data.phone,
@@ -51,68 +45,14 @@ class RegistrationViewModel @Inject constructor(
                         password = currentState.data.password,
                         role = currentState.data.userType
                     )
+                   _uiState.value= RegistrationUiState.OtpSent(email = currentState.data.email)
+                    Log.d("WOW", "onCreateAccountClicked: ")
                 } catch (e: Exception) {
                     Log.d("WOW", "Exception: ",e)
 
                 }
             }
         }
-    }
-
-    init {
-        viewModelScope.launch {
-            //sendOtpUseCase.getCurrentUser()
-        }
-    }
-
-    private var email: String? = null
-
-    suspend fun sendOtp(email: String) {
-        if (!isValidEmail(email)) {
-            _uiState.value = RegistrationUiState.Error("Invalid email address")
-            return
-        }
-        this.email = email
-        try {
-            //sendOtpUseCase.sendOtp(email)
-            _uiState.value = RegistrationUiState.OtpSent
-        } catch (e: Exception) {
-            _uiState.value = RegistrationUiState.Error("Failed to send OTP: ${e.message}")
-        }
-    }
-
-    suspend fun verifyOtp(otp: String) {
-        email?.let { email ->
-            try {
-                //val success = sendOtpUseCase.verifyOtp(email, otp)
-                //_uiState.value = if (success) {
-                //RegistrationUiState.OtpVerified
-                // } else {
-                //    RegistrationUiState.Error("Invalid OTP")
-                //  }
-            } catch (e: Exception) {
-                _uiState.value = RegistrationUiState.Error("Verification failed: ${e.message}")
-            }
-        } ?: run {
-            _uiState.value = RegistrationUiState.Error("Email not set")
-        }
-    }
-
-    suspend fun resendOtp() {
-        email?.let { email ->
-            try {
-                // sendOtpUseCase.resendOtp(email)
-                _uiState.value = RegistrationUiState.OtpResent
-            } catch (e: Exception) {
-                _uiState.value = RegistrationUiState.Error("Failed to resend OTP: ${e.message}")
-            }
-        } ?: run {
-            _uiState.value = RegistrationUiState.Error("Email not set")
-        }
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return email.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
 

@@ -2,70 +2,107 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/registrationFragment"
+    app:startDestination="@id/splashFragment"
     >
 
 
-    <fragment android:id="@+id/homeFragment"
+    <fragment
+        android:id="@+id/homeFragment"
         android:name="dev.mo.surfcart.home.ui.HomeFragment"
-        android:label="Home"
-        >
+        android:label="Home">
         <action
             android:id="@+id/action_homeFragment_to_productsFragment"
-            app:destination="@id/categoryFragment"
-            />
+            app:destination="@id/categoryFragment" />
 
     </fragment>
 
-    <fragment android:id="@+id/productsFragment"
-        android:name="dev.mo.surfcart.home.ui.ChildCategoryFragment"
-        >
+    <fragment
+
+        android:id="@+id/productsFragment"
+        android:name="dev.mo.surfcart.home.ui.ChildCategoryFragment">
+
         <argument
             android:name="categoryId"
-            app:argType="long"
             android:defaultValue="-1L"
-            />
+            app:argType="long" />
 
     </fragment>
 
-    <fragment android:id="@+id/productsDetailsFragment"
+    <fragment
+        android:id="@+id/productsDetailsFragment"
         android:name="dev.mo.surfcart.product_details.ui.ProductDetailsFragment">
-        <argument android:name="productId"
-            app:argType="long"
-           />
+        <argument
+            android:name="productId"
+            app:argType="long" />
 
     </fragment>
 
-    <fragment android:id="@+id/categoryFragment"
-        android:name="dev.mo.surfcart.categories.ui.CategoriesFragment"
-        >
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="dev.mo.surfcart.categories.ui.CategoriesFragment">
         <argument
             android:name="categoryId"
-            app:argType="long"
             android:defaultValue="-1L"
+            app:argType="long" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="dev.mo.surfcart.cart.ui.CartFragment" />
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="dev.mo.surfcart.SplashFragment" />
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="dev.mo.surfcart.registration.ui.RegistrationBoardingFragment">
+        <action
+            android:id="@+id/action_registrationBoardingFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"
+            />
+        <action
+            android:id="@+id/action_registrationBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
             />
 
     </fragment>
 
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="dev.mo.surfcart.account.ui.AccountFragment">
 
-    <fragment android:id="@+id/cartFragment"
-        android:name="dev.mo.surfcart.cart.ui.CartFragment"
-        />
-
-
-    <fragment android:id="@+id/accountFragment"
-        android:name="dev.mo.surfcart.account.ui.AccountFragment"
-    >
-
+        <action
+            android:id="@+id/action_accountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
-    <fragment android:id="@+id/registrationFragment"
-        android:name="dev.mo.surfcart.registration.ui.RegisterationFragment"
-        />
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="dev.mo.surfcart.registration.ui.RegistrationFragment">
+    <argument
+        android:name="type"
+        app:argType="string" />
+        <action
+            android:id="@+id/action_registrationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="dev.mo.surfcart.registration.ui.LoginFragment">
+
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/onboardingFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_productDetailsFragment"
-        app:destination="@id/productsDetailsFragment"
-        />
+        app:destination="@id/productsDetailsFragment" />
 
 </navigation>

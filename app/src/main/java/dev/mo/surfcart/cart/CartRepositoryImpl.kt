@@ -1,7 +1,5 @@
 package dev.mo.surfcart.cart
 
-import android.util.Log
-import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,7 +9,6 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest,
-    private val supaAuth: Auth
 ) : CartRepository {
     override suspend fun addToCart(productId: Int) {
         withContext(Dispatchers.IO) {

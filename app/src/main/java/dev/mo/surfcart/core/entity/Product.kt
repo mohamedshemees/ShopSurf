@@ -7,7 +7,7 @@ data class Product(
     val productName: String,
     val productDescription: String,
     val modelName: String? = "Generic",
-    val productPrice: Double?,
+    val productPrice: Double,
     val productCount: Long?,
     val productThumbnail: String?,
     val categoryId: Long,

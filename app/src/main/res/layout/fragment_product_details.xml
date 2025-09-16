@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#F5F5F5">
+    android:background="@color/md_theme_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="@android:color/white"
+            android:background="@color/md_theme_surfaceContainerHigh"
             android:layout_marginTop="12dp"
             android:elevation="3dp"
             android:radius="16dp">
@@ -39,7 +39,7 @@
                 android:text="Product Name"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#333333" />
+                android:textColor="@color/md_theme_onSurface" />
 
             <TextView
                 android:id="@+id/productDescription"
@@ -48,7 +48,7 @@
                 android:paddingTop="6dp"
                 android:text="Product description goes here"
                 android:textSize="14sp"
-                android:textColor="#666666" />
+                android:textColor="@color/md_theme_onSurfaceVariant" />
 
             <!-- Dynamic Category Details -->
             <LinearLayout
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:text="Add to Cart"
                     android:backgroundTint="@color/md_theme_tertiary"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/md_theme_onTertiary"
                     android:padding="10dp"
                     android:elevation="4dp">
                 </Button>
@@ -90,3 +90,4 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
+

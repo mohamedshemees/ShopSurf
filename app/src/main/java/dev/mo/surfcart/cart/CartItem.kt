@@ -2,7 +2,6 @@ package dev.mo.surfcart.cart
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 
 @Serializable
 data class CartItem(

@@ -11,7 +11,7 @@ object ProductMapper{
             productName = productName,
             productDescription = productDescription,
             modelName = modelName,
-            productPrice = productPrice,
+            productPrice = productPrice?:0.0,
             productCount = productCount,
             productThumbnail = productThumbnail,
             categoryId = categoryId,

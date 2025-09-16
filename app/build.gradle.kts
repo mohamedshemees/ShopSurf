@@ -9,12 +9,10 @@ val baseUrl = localProperties.getProperty("BASE_URL") ?: "\"BASE_URL_NOT_FOUND\"
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id ("com.google.dagger.hilt.android")
-    id ("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
     id("kotlinx-serialization")
-    id ("androidx.navigation.safeargs.kotlin")
-
-
+    id("androidx.navigation.safeargs.kotlin")
 
 }
 
@@ -24,9 +22,7 @@ android {
 
 
 
-
     defaultConfig {
-
         buildFeatures {
             buildConfig = true // Enable BuildConfig generation
         }
@@ -36,17 +32,11 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-
         buildConfigField("String", "API_KEY", apiKey)
-        buildConfigField ("String", "BASE_URL", baseUrl)
+        buildConfigField("String", "BASE_URL", baseUrl)
 
     }
-
-
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -91,15 +81,15 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
 
-    implementation (libs.glide)
-    annotationProcessor (libs.compiler)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 
-    implementation (libs.hilt.android)
-    kapt (libs.hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
 
     // ViewModel
@@ -125,16 +115,15 @@ dependencies {
     // Lifecycle (Ensure compatibility with AppCompat)
     implementation(libs.androidx.lifecycle.runtime.ktx.v287)  // Use version 2.7.x
     implementation(libs.androidx.lifecycle.common)
-
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //supabase
-    implementation (libs.postgrest.kt)
-    implementation (libs.storage.kt)
-    implementation (libs.auth.kt)
-    implementation (libs.ktor.client.android)
-    implementation (libs.ktor.client.core)
-    implementation (libs.ktor.utils)
+    implementation(libs.postgrest.kt)
+    implementation(libs.storage.kt)
+    implementation(libs.auth.kt)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.utils)
     implementation(libs.kotlinx.serialization.json) // Use the latest version
 }
 

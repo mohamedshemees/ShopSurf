@@ -1,14 +1,11 @@
 package dev.mo.surfcart.home.ui
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-
 import android.view.ViewGroup
-
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import dev.mo.surfcart.databinding.SliderItemContinerBinding
 
 

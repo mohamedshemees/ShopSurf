@@ -1,23 +1,16 @@
 package dev.mo.surfcart.checkout.ui
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import dev.mo.surfcart.R
-import dev.mo.surfcart.databinding.FragmentCategoriesBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.mo.surfcart.databinding.FragmentCheckoutBinding
 
 class CheckoutFragment : Fragment() {
     lateinit var binding: FragmentCheckoutBinding
-
-    companion object {
-        fun newInstance() = CheckoutFragment()
-    }
-
     private val viewModel: CheckoutViewModel by viewModels()
 
     override fun onCreateView(
@@ -34,6 +27,12 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding
+        binding.orderItemsRv.adapter = CheckoutProductsAdapter()
+        binding.deliveryAddressRv.adapter = DeliveryAddressAdapter()
+        binding.paymentMethodRv.adapter = PaymentMethodAdapter()
+
+        binding.orderItemsRv.layoutManager= LinearLayoutManager(requireContext())
+        binding.deliveryAddressRv.layoutManager= LinearLayoutManager(requireContext())
+        binding.paymentMethodRv.layoutManager= LinearLayoutManager(requireContext())
     }
 }

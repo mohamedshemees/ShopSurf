@@ -24,8 +24,6 @@
         android:text="wwwwwww"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:background="#80000000" />
+        android:background="@color/dark_scrim" />
 
     </com.google.android.material.carousel.MaskableFrameLayout>
-
-

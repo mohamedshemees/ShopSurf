@@ -17,7 +17,7 @@
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@android:color/black"
+        android:textColor="@color/md_theme_onSurface"
         android:textSize="14sp"
         tools:text="Home and Kitchen" />
     <com.google.android.material.imageview.ShapeableImageView

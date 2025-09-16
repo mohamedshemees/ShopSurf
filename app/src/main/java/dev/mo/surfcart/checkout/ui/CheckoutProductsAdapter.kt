@@ -2,6 +2,7 @@ package dev.mo.surfcart.checkout.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.mo.surfcart.cart.CartItem
@@ -48,4 +49,6 @@ class CheckoutProductsAdapter() :
     }
 
     override fun getItemCount() = products.size
+
+
 }

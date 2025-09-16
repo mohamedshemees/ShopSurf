@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentRegistrationBinding
@@ -36,16 +37,12 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("WOW", "onViewCreated: ")
         initViews()
         collectUiState()
     }
 
     private fun initViews() {
-        Log.d("WOW", "initViews: ")
         binding.apply {
-            Log.d("WOW", "apply: ")
-
             etFirstName.doAfterTextChanged {
                 viewModel.onNameChanged(it.toString())
             }
@@ -66,9 +63,7 @@ class RegistrationFragment : Fragment() {
                 viewModel.onConfirmPasswordChanged(it.toString())
             }
 
-            Log.d("WOW", "initViews: ")
             btnCreateAccount.setOnClickListener {
-                Log.d("WOW", "initViews: ")
                 viewModel.onCreateAccountClicked()
             }
         }
@@ -80,45 +75,42 @@ class RegistrationFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is RegistrationUiState.Success -> {
+                        is RegistrationUiState.TakingInput -> {
                             val data = state.data
-                            binding.tvSubtitle.setText("Join us as a ${data.userType}")
-                            Log.d("WOW", "data: ${data}")
-                            Log.d(
-                                "WOW", "collectUiState: ${
-                                    data.name.isNotBlank() && data.phone.isNotBlank() && data.email.isNotBlank() && data.password.isNotBlank() && data.confirmPassword.isNotBlank()
-
-                                }"
-                            )
                             binding.btnCreateAccount.isEnabled =
-                                data.name.isNotBlank() && data.phone.isNotBlank() && data.email.isNotBlank() && data.password.isNotBlank() && data.confirmPassword.isNotBlank()
+                                data.name.isNotBlank() && data.phone.isNotBlank() &&
+                                        data.email.isNotBlank() && data.password.isNotBlank() &&
+                                        data.confirmPassword.isNotBlank() &&
+                                        data.password == data.confirmPassword // Ensure passwords match for enabling
                         }
-
                         is RegistrationUiState.OtpSent -> {
-                            Toast.makeText(requireContext(), "OTP Sent!", Toast.LENGTH_SHORT).show()
-                        }
-
-                        is RegistrationUiState.OtpVerified -> {
-                            Toast.makeText(requireContext(), "OTP Verified!", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                        is RegistrationUiState.OtpResent -> {
-                            Toast.makeText(requireContext(), "OTP Resent!", Toast.LENGTH_SHORT)
-                                .show()
+                            Log.d("RegistrationFragment", "OtpSent state received. Showing bottom sheet.")
+                            val otpBottomSheetFragment = OtpBottomSheetFragment.newInstance(
+                                email = state.email,
+                                onVerifiedSuccessfully = {
+                                    Log.d("RegistrationFragment", "OtpBottomSheetFragment.onVerifiedSuccessfully called.")
+                                    navigateToBoarding()
+                                }
+                            )
+                            otpBottomSheetFragment.show(childFragmentManager, OtpBottomSheetFragment.TAG)
                         }
 
                         is RegistrationUiState.Error -> {
+                            Log.d("RegistrationFragment", "Error state received: ${state.message}")
                             Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT)
                                 .show()
-                            // viewModel.resetToForm()
                         }
-//                        RegistrationUiState.Loading -> {
-//                            // Show progress bar
-//                        }
+                        RegistrationUiState.Loading -> {
+                            Log.d("RegistrationFragment", "Loading state received.")
+                        }
+
                     }
                 }
             }
         }
+    }
+    private fun navigateToBoarding(){
+        val action = RegistrationFragmentDirections.actionRegistrationFragmentToHomeFragment()
+        findNavController().navigate(action)
     }
 }
