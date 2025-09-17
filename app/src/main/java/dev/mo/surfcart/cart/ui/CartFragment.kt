@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class CartFragment : Fragment() {
 
     lateinit var binding: FragmentCartBinding
-    private val cartViewModel:CartViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
     private lateinit var cartItemsAdapter: CartItemsAdapter
     private lateinit var cartItemRecyclerView: RecyclerView
 
@@ -28,21 +28,31 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        cartItemRecyclerView=binding.cartRecyclerView
-        cartItemRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+        cartItemRecyclerView = binding.cartRecyclerView
+        cartItemRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         cartItemsAdapter = CartItemsAdapter(
             onItemClick = ::openProductDetails,
-            onItemRemove =  cartViewModel::removeFromCart ,
-            onItemIncrement =  cartViewModel::increaseQuantity ,
-            onItemDecrement =  cartViewModel::decreaseQuantity
+            onItemRemove = cartViewModel::removeFromCart,
+            onItemIncrement = cartViewModel::increaseQuantity,
+            onItemDecrement = cartViewModel::decreaseQuantity
         )
         cartItemRecyclerView.adapter = cartItemsAdapter
+
+        binding.checkoutButton.setOnClickListener {
+            navigateToCheckout()
+        }
         return binding.root
     }
 
     private fun openProductDetails(productId: Int) {
-            val action = CartFragmentDirections.actionGlobalProductDetailsFragment(productId.toLong())
-            findNavController().navigate(action)
+        val action = CartFragmentDirections.actionGlobalProductDetailsFragment(productId.toLong())
+        findNavController().navigate(action)
+
+    }
+
+    private fun navigateToCheckout() {
+        val action = CartFragmentDirections.actionCartFragmentToCheckoutFragment()
+        findNavController().navigate(action)
 
     }
 
@@ -50,7 +60,7 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            cartViewModel.cartItems.collect{
+            cartViewModel.cartItems.collect {
                 cartItemsAdapter.updateCartItems(it)
             }
         }

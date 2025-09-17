@@ -51,7 +51,7 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getAllProductsOfCategory(categoryId: Long): List<Product> {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
-                "get_products_by_parent_category",  // SQL function name
+                "get_products_by_parent_category",
                 JsonObject(mapOf("parent_id" to JsonPrimitive(categoryId)))
             )
                 .decodeList<ProductDto>()
@@ -80,28 +80,28 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getOnSaleProducts(): List<Product> {
-        return withContext(Dispatchers.IO) {
-            postgrest.from("product")
-                .select()
-                .decodeList<ProductDto>()
-                .filter { it.discountPrice != null && it.discountPrice > 0 }
-                .map { it.toProduct() }
-        }
+        return postgrest.rpc(
+            "get_on_sale_products",
+        )
+            .decodeList<ProductDto>()
+            .map { it.toProduct() }
     }
 
     override suspend fun getProductDetails(productId: Long): Map<String, String> {
         val details = withContext(Dispatchers.IO) {
             postgrest.rpc(
                 "get_product_details_structured",
-                JsonObject(mapOf("p_product_id" to JsonPrimitive(productId))
-            )).decodeAs<ProductDetails>()
+                JsonObject(
+                    mapOf("p_product_id" to JsonPrimitive(productId))
+                )
+            ).decodeAs<ProductDetails>()
         }
 
         return details.properties
     }
 
     override suspend fun getProductInstanceDetails(productId: String): Product {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             postgrest.from("product_instance")
                 .select()
                 .decodeAs<ProductDto>()

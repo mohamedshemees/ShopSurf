@@ -24,7 +24,7 @@
         />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@id/product_thumbnail"
+            android:id="@+id/payment_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/credit_card"
@@ -39,7 +39,7 @@
             android:orientation="vertical"
             >
             <TextView
-                android:id="@+id/address_name"
+                android:id="@+id/payment_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Home"
@@ -48,7 +48,7 @@
                 />
 
                 <TextView
-                    android:id="@+id/address_details"
+                    android:id="@+id/payment_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="123 Main St, City, State 12345"

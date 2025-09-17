@@ -35,6 +35,8 @@
                 android:id="@+id/order_items_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:listitem="@layout/item_checkout_product"
+                tools:itemCount="3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_items_tv" />
 
@@ -63,6 +65,8 @@
             android:id="@+id/delivery_address_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:listitem="@layout/item_delivery_address"
+            tools:itemCount="3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/delivery_address_tv" />
 
@@ -90,6 +94,8 @@
                 android:id="@+id/payment_method_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:listitem="@layout/item_payment_method"
+                tools:itemCount="3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/payment_method_tv" />
 

@@ -18,6 +18,7 @@
         android:padding="@dimen/padding_medium">
 
         <RadioButton
+            android:id="@+id/address_radio_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"

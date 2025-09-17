@@ -2,50 +2,53 @@ package dev.mo.surfcart.checkout.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import dev.mo.surfcart.cart.CartItem
-import dev.mo.surfcart.databinding.ItemCheckoutProductBinding
+import dev.mo.surfcart.account.data.dto.CustomerAddress
+import dev.mo.surfcart.core.adapter.MyDiffUtil
+import dev.mo.surfcart.databinding.ItemDeliveryAddressBinding
 
 class DeliveryAddressAdapter() :
-    RecyclerView.Adapter<DeliveryAddressAdapter.CheckoutProductsViewHolder>() {
-    private var products = emptyList<CartItem>()
-    fun submitList(newSubCategories: List<CartItem>) {
-        products = newSubCategories
-        notifyDataSetChanged()
+    RecyclerView.Adapter<DeliveryAddressAdapter.CheckoutAddressesViewHolder>() {
+    private var addresses = emptyList<CustomerAddress>()
+    fun submitList(newAddresses: List<CustomerAddress>) {
+        val diffUtil = MyDiffUtil(
+            oldList = addresses,
+            newList = newAddresses,
+            areItemsTheSame = { old, new -> old.street == new.street },
+            areContentsTheSame = { old, new -> old == new })
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        addresses = newAddresses
+        diffResults.dispatchUpdatesTo(this)
     }
 
-    class CheckoutProductsViewHolder(itemView: ItemCheckoutProductBinding) :
+    class CheckoutAddressesViewHolder(itemView: ItemDeliveryAddressBinding) :
         RecyclerView.ViewHolder(itemView.root) {
         val binding = itemView
-        fun bind(productItem: CartItem) {
-            binding.productName.text = productItem.title
-            binding.productQuantity.text = productItem.quantity.toString()
-            binding.productPrice.text = productItem.price.times(productItem.quantity).toString()
-            Glide.with(binding.root)
-                .load(productItem.imageUrl)
-                .into(binding.productThumbnail)
+        fun bind(address: CustomerAddress) {
+            binding.addressDetails.text = address.street + address.city + address.country
+
+
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CheckoutProductsViewHolder {
+    ): CheckoutAddressesViewHolder {
         val binding =
-            ItemCheckoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemDeliveryAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return CheckoutProductsViewHolder(binding)
+        return CheckoutAddressesViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: CheckoutProductsViewHolder,
+        holder: CheckoutAddressesViewHolder,
         position: Int
     ) {
-        val item = products[position]
+        val item = addresses[position]
         holder.bind(item)
-
     }
 
-    override fun getItemCount() = products.size
+    override fun getItemCount() = addresses.size
 }

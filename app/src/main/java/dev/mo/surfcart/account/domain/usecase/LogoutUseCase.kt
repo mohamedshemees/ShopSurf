@@ -1,4 +1,4 @@
-package dev.mo.surfcart.account.usecase
+package dev.mo.surfcart.account.domain.usecase
 
 import dev.mo.surfcart.registration.data.AuthRepository
 import javax.inject.Inject

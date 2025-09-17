@@ -42,13 +42,11 @@ class CartRepositoryImpl @Inject constructor(
             postgrest.rpc(
                 "get_cart_items",
             )
-
         }.decodeList<CartItem>()
 
     }
 
     override suspend fun clearCart(productId: Int) {
-
     }
 
     override suspend fun getTotalPrice(): Double {

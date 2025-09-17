@@ -33,4 +33,5 @@
     <string name="login_forget_password">Forget password?</string>
     <string name="login_button_text">Log In</string>
     <string name="login_signup_link">Don\'t have an account? Create Account</string>
+    <string name="add_to_cart">Add to Cart</string>
 </resources>

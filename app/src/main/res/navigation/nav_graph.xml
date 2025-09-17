@@ -50,8 +50,14 @@
 
     <fragment
         android:id="@+id/cartFragment"
-        android:name="dev.mo.surfcart.cart.ui.CartFragment" />
-
+        android:name="dev.mo.surfcart.cart.ui.CartFragment" >
+    <action android:id="@+id/action_cartFragment_to_checkoutFragment"
+        app:destination="@id/checkoutFragment"
+        />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="dev.mo.surfcart.checkout.ui.CheckoutFragment" />
     <fragment
         android:id="@+id/splashFragment"
         android:name="dev.mo.surfcart.SplashFragment" />

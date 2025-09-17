@@ -2,45 +2,55 @@ package dev.mo.surfcart.checkout.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import dev.mo.surfcart.cart.CartItem
-import dev.mo.surfcart.databinding.ItemCheckoutProductBinding
+import dev.mo.surfcart.core.adapter.MyDiffUtil // Assuming MyDiffUtil is in this package
+import dev.mo.surfcart.databinding.ItemPaymentMethodBinding // Assuming this binding class exists
 
 class PaymentMethodAdapter() :
-    RecyclerView.Adapter<PaymentMethodAdapter.CheckoutProductsViewHolder>() {
-    private var products = emptyList<CartItem>()
-    fun submitList(newSubCategories: List<CartItem>) {
-        products = newSubCategories
-        notifyDataSetChanged()
+    RecyclerView.Adapter<PaymentMethodAdapter.PaymentMethodViewHolder>() {
+
+    private var paymentMethods = emptyList<PaymentMethodItem>()
+
+    fun submitList(newPaymentMethods: List<PaymentMethodItem>) {
+        val diffUtilCallback = MyDiffUtil(
+            oldList = paymentMethods,
+            newList = newPaymentMethods,
+            areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id },
+            areContentsTheSame = { oldItem, newItem -> oldItem == newItem }
+        )
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+        paymentMethods = newPaymentMethods
+        diffResult.dispatchUpdatesTo(this)
     }
 
-    class CheckoutProductsViewHolder(itemView: ItemCheckoutProductBinding) :
+    class PaymentMethodViewHolder(itemView: ItemPaymentMethodBinding) :
         RecyclerView.ViewHolder(itemView.root) {
         val binding = itemView
-        fun bind(productItem: CartItem) {
-            binding.productName.text = productItem.title
-            binding.productQuantity.text = productItem.quantity.toString()
-            binding.productPrice.text = productItem.price.times(productItem.quantity).toString()
-            Glide.with(binding.root).load(productItem.imageUrl).into(binding.productThumbnail)
+        fun bind(paymentMethod: PaymentMethodItem) {
+            binding.paymentType.text = paymentMethod.name
+            binding.paymentDetails.text = paymentMethod.description ?: ""
+
+
         }
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ): CheckoutProductsViewHolder {
+        parent: ViewGroup,
+        viewType: Int
+    ): PaymentMethodViewHolder {
         val binding =
-            ItemCheckoutProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return CheckoutProductsViewHolder(binding)
+            ItemPaymentMethodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PaymentMethodViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: CheckoutProductsViewHolder, position: Int
+        holder: PaymentMethodViewHolder,
+        position: Int
     ) {
-        val item = products[position]
+        val item = paymentMethods[position]
         holder.bind(item)
     }
 
-    override fun getItemCount() = products.size
+    override fun getItemCount() = paymentMethods.size
 }
