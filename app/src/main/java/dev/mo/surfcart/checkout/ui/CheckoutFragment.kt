@@ -9,15 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentCheckoutBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class CheckoutFragment : Fragment() {
     private lateinit var binding: FragmentCheckoutBinding
     private val viewModel: CheckoutViewModel by viewModels()
 
-    // Declare adapters as member variables
     private lateinit var deliveryAddressAdapter: DeliveryAddressAdapter
     private lateinit var checkoutProductsAdapter: CheckoutProductsAdapter
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter

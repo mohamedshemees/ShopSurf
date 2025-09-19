@@ -28,8 +28,8 @@ class PaymentMethodAdapter() :
         RecyclerView.ViewHolder(itemView.root) {
         val binding = itemView
         fun bind(paymentMethod: PaymentMethodItem) {
-            binding.paymentType.text = paymentMethod.name
-            binding.paymentDetails.text = paymentMethod.description ?: ""
+            binding.paymentType.text = paymentMethod.provider
+            binding.paymentDetails.text = paymentMethod.last4 ?: ""
 
 
         }

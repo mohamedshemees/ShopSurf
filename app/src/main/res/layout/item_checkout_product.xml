@@ -22,6 +22,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:src="@drawable/mosalah"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/OvalImageShape"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_medium"

@@ -20,7 +20,7 @@ data class CheckOutUiState(
     val userAddresses: List<CustomerAddress> = emptyList(),
     val checkoutProducts: List<CartItem> = emptyList(),
     val paymentMethods: List<PaymentMethodItem> = emptyList(),
-    val isLoading: Boolean = false, // Single isLoading flag
+    val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
 
