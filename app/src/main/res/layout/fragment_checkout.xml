@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Order Items" />
+                android:text="Order Items" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/order_items_rv"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Delivery Address" />
+            android:text="Delivery Address" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/delivery_address_rv"
