@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Snackbar.Success" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/md_theme_success</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Snackbar.Error" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/md_theme_error</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>

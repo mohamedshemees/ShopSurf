@@ -1,12 +1,15 @@
 package dev.mo.surfcart.product_details.ui
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,9 +20,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.R
 import dev.mo.surfcart.cart.ui.CartViewModel
+import dev.mo.surfcart.core.UiEvent
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.FragmentProductDetailsBinding
 import dev.mo.surfcart.products.ui.ProductAdapter
@@ -55,6 +60,7 @@ class ProductDetailsFragment : Fragment() {
 
         productDetailsViewModel.loadProductData(productId)
         observeUiState()
+        observeUiEvents()
     }
 
     private fun setupSimilarProductsRecyclerView() {
@@ -73,7 +79,6 @@ class ProductDetailsFragment : Fragment() {
     private fun setupClickListeners(productId: Long) {
         binding.addToCartButton.setOnClickListener {
             cartViewModel.addToCart(productId.toInt())
-            Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -81,21 +86,30 @@ class ProductDetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 productDetailsViewModel.uiState.collect { state ->
-                    binding.progressBar.visibility =
-                        if (state.isLoading) View.VISIBLE else View.GONE
-                    binding.contentGroup.visibility =
-                        if (state.isLoading) View.GONE else View.VISIBLE
+                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                    binding.contentGroup.visibility = if (state.isLoading) View.GONE else View.VISIBLE
 
                     if (!state.isLoading) {
-                        state.product?.let { product ->
-                            bindProductData(product)
-                        }
+                        state.product?.let { product -> bindProductData(product) }
                         populateProductDetails(state.productDetails)
                         similarProductsAdapter.submitList(state.similarProducts)
 
                         state.errorMessage?.let { message ->
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                            showTopSnackbar(message, isError = true)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeUiEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                cartViewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is UiEvent.ShowSuccessSnackbar -> showTopSnackbar(event.message, isError = false)
+                        is UiEvent.ShowErrorSnackbar -> showTopSnackbar(event.message, isError = true)
                     }
                 }
             }
@@ -130,6 +144,20 @@ class ProductDetailsFragment : Fragment() {
             }
             binding.categoryDetailsContainer.addView(attributeTextView)
         }
+    }
+
+    private fun showTopSnackbar(message: String, isError: Boolean) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val view = snackbar.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+
+        val color = ContextCompat.getColor(requireContext(), if (isError)  R.color.md_theme_error else R.color.md_theme_success)
+        snackbar.setBackgroundTint(color)
+        snackbar.setTextColor(Color.WHITE)
+
+        snackbar.show()
     }
 
     override fun onDestroyView() {

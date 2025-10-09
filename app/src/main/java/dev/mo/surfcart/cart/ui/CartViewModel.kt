@@ -1,7 +1,5 @@
 package dev.mo.surfcart.cart.ui
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mo.surfcart.cart.CartItem
 import dev.mo.surfcart.cart.usecase.AddProductToCartUseCase
@@ -9,8 +7,12 @@ import dev.mo.surfcart.cart.usecase.DecreaseQuantityUseCase
 import dev.mo.surfcart.cart.usecase.GetCartItemsUseCase
 import dev.mo.surfcart.cart.usecase.IncreaseQuantityUseCase
 import dev.mo.surfcart.cart.usecase.RemoveProductFromCartUseCase
+import dev.mo.surfcart.core.BaseViewModel
+import dev.mo.surfcart.core.DomainException
+import dev.mo.surfcart.core.DuplicateEntryException
+import dev.mo.surfcart.core.UiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,58 +20,74 @@ class CartViewModel @Inject constructor(
     private val getCartItemsUseCase: GetCartItemsUseCase,
     private val removeProductFromCartUseCase: RemoveProductFromCartUseCase,
     private val addProductToCartUseCase: AddProductToCartUseCase,
-
     private val increaseQuantityUseCase: IncreaseQuantityUseCase,
     private val decreaseQuantityUseCase: DecreaseQuantityUseCase,
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val _cartItems= MutableStateFlow<List<CartItem>>(emptyList())
-    val cartItems= _cartItems
+    private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
+    val cartItems = _cartItems.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            getCartItems()
-        }
+        getCartItems()
+    }
+
+    private fun getCartItems() {
+        tryToExecute(
+            call = { getCartItemsUseCase() },
+            onSuccess = { items ->
+                _cartItems.value = items
+            },
+            onError = { exception ->
+                sendUiEvent(UiEvent.ShowErrorSnackbar(exception.message ?: "Couldn't load cart"))
+            }
+        )
     }
 
     fun addToCart(productId: Int) {
-        viewModelScope.launch {
-            addProductToCartUseCase(productId)
-            getCartItems()
-        }
+        tryToExecute(
+            call = { addProductToCartUseCase(productId) },
+            onSuccess = {
+                getCartItems()
+                sendUiEvent(UiEvent.ShowSuccessSnackbar("Item added successfully"))
+            },
+            onError = { exception ->
+                val errorMessage = if (exception is DuplicateEntryException) {
+                    "Item is already in cart"
+                } else {
+                    exception.message ?: "Couldn't add item"
+                }
+                sendUiEvent(UiEvent.ShowErrorSnackbar(errorMessage))
+            }
+        )
     }
 
-    suspend fun clearCart() {
-        // Implement clear cart functionality if needed
+    fun removeFromCart(productId: Int) {
+        tryToExecute(
+            call = { removeProductFromCartUseCase(productId) },
+            onSuccess = { getCartItems() },
+            onError = { exception ->
+                sendUiEvent(UiEvent.ShowErrorSnackbar(exception.message ?: "Couldn't remove item"))
+            }
+        )
     }
 
-    suspend fun getTotalPrice(): Double {
-        // Implement total price calculation if needed
-        return 0.0 // Placeholder
+    fun increaseQuantity(productId: Int) {
+        tryToExecute(
+            call = { increaseQuantityUseCase(productId) },
+            onSuccess = { getCartItems() },
+            onError = { exception ->
+                sendUiEvent(UiEvent.ShowErrorSnackbar(exception.message ?: "An error occurred"))
+            }
+        )
     }
 
-     fun removeFromCart(productId: Int) {
-        viewModelScope.launch {
-            removeProductFromCartUseCase(productId)
-            getCartItems()
-        }
+    fun decreaseQuantity(productId: Int) {
+        tryToExecute(
+            call = { decreaseQuantityUseCase(productId) },
+            onSuccess = { getCartItems() },
+            onError = { exception ->
+                sendUiEvent(UiEvent.ShowErrorSnackbar(exception.message ?: "An error occurred"))
+            }
+        )
     }
-
-     fun increaseQuantity(productId: Int) {
-         viewModelScope.launch {
-             increaseQuantityUseCase(productId)
-             getCartItems()
-         }
-    }
-
-     fun decreaseQuantity(productId: Int) {
-         viewModelScope.launch {
-             decreaseQuantityUseCase(productId)
-             getCartItems()
-         }
-    }
-    private suspend fun getCartItems() {
-         _cartItems.value=getCartItemsUseCase()
-    }
-
 }

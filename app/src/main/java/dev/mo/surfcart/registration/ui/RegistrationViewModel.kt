@@ -1,21 +1,19 @@
 package dev.mo.surfcart.registration.ui
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.mo.surfcart.core.BaseViewModel
 import dev.mo.surfcart.registration.usecase.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val registrationUseCase: RegisterUseCase
+) : BaseViewModel() {
 
-) : ViewModel() {
     private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.TakingInput())
-    val uiState = _uiState
+    val uiState = _uiState.asStateFlow()
 
     private fun updateForm(transform: (CreateAccountUiState) -> CreateAccountUiState) {
         val current = _uiState.value
@@ -32,12 +30,12 @@ class RegistrationViewModel @Inject constructor(
     fun setUserType(userType: String) = updateForm { it.copy(userType = userType) }
 
     fun onCreateAccountClicked() {
-        viewModelScope.launch {
+        val currentState = _uiState.value
+        if (currentState is RegistrationUiState.TakingInput) {
+            _uiState.value = RegistrationUiState.Loading
 
-            val currentState = _uiState.value
-            _uiState.value= RegistrationUiState.Loading
-            if (currentState is RegistrationUiState.TakingInput) {
-                try {
+            tryToExecute(
+                call = {
                     registrationUseCase(
                         name = currentState.data.name,
                         phone = currentState.data.phone,
@@ -45,13 +43,19 @@ class RegistrationViewModel @Inject constructor(
                         password = currentState.data.password,
                         role = currentState.data.userType
                     )
-                   _uiState.value= RegistrationUiState.OtpSent(email = currentState.data.email)
-                } catch (e: Exception) {
-                    Log.d("WOW", "Exception: ",e)
-
+                },
+                onSuccess = {
+                    _uiState.value = RegistrationUiState.OtpSent(email = currentState.data.email)
+                },
+                onError = { exception ->
+                    _uiState.value = RegistrationUiState.Error(exception.message ?: "An unknown error occurred")
                 }
-            }
+            )
         }
     }
-}
 
+    fun resetToForm() {
+        val currentData = (_uiState.value as? RegistrationUiState.TakingInput)?.data ?: CreateAccountUiState()
+        _uiState.value = RegistrationUiState.TakingInput(currentData)
+    }
+}

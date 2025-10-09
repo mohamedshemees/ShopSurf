@@ -1,7 +1,7 @@
 package dev.mo.surfcart
 
-import androidx.lifecycle.ViewModel
+import dev.mo.surfcart.core.BaseViewModel
 
-class SellerHomeViewModel : ViewModel() {
+class SellerHomeViewModel : BaseViewModel() {
     // TODO: Implement the ViewModel
 }
