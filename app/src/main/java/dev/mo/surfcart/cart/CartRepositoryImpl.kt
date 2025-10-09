@@ -45,10 +45,15 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearCart(productId: Int) {
+        safeSupabaseCall {
+            postgrest.rpc("clear_cart")
+        }
     }
 
     override suspend fun getTotalPrice(): Double {
-        TODO("Not yet implemented")
+        return safeSupabaseCall {
+            postgrest.rpc("get_total_price").decodeSingle<Double>()
+        }
     }
 
     override suspend fun removeProductFromCart(productId: Int) {

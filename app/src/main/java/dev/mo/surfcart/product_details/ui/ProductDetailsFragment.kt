@@ -4,67 +4,63 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager // Added import
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import dev.mo.surfcart.R
 import dev.mo.surfcart.cart.ui.CartViewModel
+import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.FragmentProductDetailsBinding
-import dev.mo.surfcart.products.ui.ProductAdapter // Added import
+import dev.mo.surfcart.products.ui.ProductAdapter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductDetailsFragment : Fragment() {
 
-    private lateinit var binding: FragmentProductDetailsBinding // Changed to private
-    private lateinit var disreiptionContainer: LinearLayout // Changed to private, consider removing if not used elsewhere
+    private var _binding: FragmentProductDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private val productDetailsViewModel: ProductDetailsViewModel by viewModels()
     private val cartViewModel: CartViewModel by activityViewModels()
-    private lateinit var addToCartBtn: Button // Changed to private
+    private val args: ProductDetailsFragmentArgs by navArgs()
 
-    private lateinit var similarProductsAdapter: ProductAdapter // Added adapter
+    private lateinit var similarProductsAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
-        addToCartBtn = binding.addToCartButton
-        // Removed disreiptionContainer = binding.categoryDetailsContainer from here
+        _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: ProductDetailsFragmentArgs by navArgs()
+
         val productId = args.productId
 
-        disreiptionContainer = binding.categoryDetailsContainer
-
         setupSimilarProductsRecyclerView()
+        setupClickListeners(productId)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            initViews(productId)
-        }
-
-
-        initListeners(productId)
-        observeSimilarProducts()
+        productDetailsViewModel.loadProductData(productId)
+        observeUiState()
     }
 
     private fun setupSimilarProductsRecyclerView() {
-        similarProductsAdapter = ProductAdapter { clickedProductId ->
-
+        similarProductsAdapter = ProductAdapter { clickedProduct ->
             val action =
-                ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(clickedProductId)
+                ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(clickedProduct)
             findNavController().navigate(action)
         }
         binding.similarProductsRecyclerView.apply {
@@ -74,44 +70,71 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
-    private fun observeSimilarProducts() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            productDetailsViewModel.similarProducts.collect { products ->
-                similarProductsAdapter.submitList(products)
-            }
-        }
-    }
-
-    private fun initListeners(productId: Long) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            productDetailsViewModel.product.collect { product ->
-                binding.productTitle.text = product?.productName
-                binding.productPrice.text = product?.productPrice.toString()
-                Glide.with(requireContext())
-                    .load(product?.productThumbnail)
-                    .into(binding.productThumbnail)
-                binding.productDescription.text = product?.productDescription
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            val detailsMap = productDetailsViewModel.getProductDetails(productId)
-            disreiptionContainer.removeAllViews()
-            detailsMap.forEach {
-                val textView = TextView(requireContext())
-                textView.text = "${it.key}: ${it.value}"
-                disreiptionContainer.addView(textView)
-            }
-        }
-        addToCartBtn.setOnClickListener {
+    private fun setupClickListeners(productId: Long) {
+        binding.addToCartButton.setOnClickListener {
             cartViewModel.addToCart(productId.toInt())
+            Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private suspend fun initViews(productId: Long) {
-        productDetailsViewModel.getProductDetails(productId)
-        productDetailsViewModel.getProductById(productId)
-        productDetailsViewModel.fetchSimilarProducts()
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productDetailsViewModel.uiState.collect { state ->
+                    binding.progressBar.visibility =
+                        if (state.isLoading) View.VISIBLE else View.GONE
+                    binding.contentGroup.visibility =
+                        if (state.isLoading) View.GONE else View.VISIBLE
 
+                    if (!state.isLoading) {
+                        state.product?.let { product ->
+                            bindProductData(product)
+                        }
+                        populateProductDetails(state.productDetails)
+                        similarProductsAdapter.submitList(state.similarProducts)
+
+                        state.errorMessage?.let { message ->
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun bindProductData(product: Product) {
+        binding.productTitle.text = product.productName
+        binding.productDescription.text = product.productDescription
+        binding.productPrice.text = product.productPrice.toString()
+        Glide.with(this)
+            .load(product.productThumbnail)
+            .placeholder(R.drawable.mosalah)
+            .error(R.drawable.ic_cart_outlined)
+            .into(binding.productThumbnail)
+    }
+
+    private fun populateProductDetails(details: Map<String, String>) {
+        binding.categoryDetailsContainer.removeAllViews()
+        val context = requireContext()
+        details.forEach { (key, value) ->
+            val attributeTextView = TextView(context).apply {
+                text = "$key: $value"
+                textSize = 14f
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                val marginBottom = (8 * resources.displayMetrics.density).toInt()
+                params.bottomMargin = marginBottom
+                layoutParams = params
+            }
+            binding.categoryDetailsContainer.addView(attributeTextView)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.similarProductsRecyclerView.adapter = null
+        _binding = null
     }
 }

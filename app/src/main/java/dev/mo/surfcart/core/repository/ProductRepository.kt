@@ -11,6 +11,7 @@ interface ProductRepository {
     suspend fun getAllProductsOfCategory(categoryId: Long): List<Product>
     suspend fun getBanners(): List<String>
     suspend fun getOnSaleProducts(): List<Product>
+    suspend fun getSearchResult(query:String): List<Product>
     suspend fun getProductDetails(productId: Long): Map<String, String>
     suspend fun getProductInstanceDetails(productId: String): Product
     suspend fun getProductById(productId: Long): Product

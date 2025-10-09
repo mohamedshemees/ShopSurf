@@ -1,4 +1,4 @@
-package dev.mo.surfcart.home.ui
+package dev.mo.surfcart.products.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.FragmentChildcategoryBinding
 import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
-import dev.mo.surfcart.products.ui.ChipCategoriesAdapter
-import dev.mo.surfcart.products.ui.ProductAdapter
-import dev.mo.surfcart.products.ui.ProductsViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

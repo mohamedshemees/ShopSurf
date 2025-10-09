@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -24,6 +26,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     lateinit var onSaleProductsAdapter: ProductAdapter
     lateinit var categoryAdapter: CategoryAdapter
+    lateinit var searchAdapter: SearchAdapter
+
     lateinit var categoriesRecyclerView: RecyclerView
     lateinit var onSaleproductsRecyclerView: RecyclerView
 
@@ -57,6 +61,11 @@ class HomeFragment : Fragment() {
 
             }
         }
+        lifecycleScope.launch {
+            viewModel.products.collect { prodcuts ->
+                searchAdapter.submitList(prodcuts)
+            }
+        }
     }
 
     private fun initViews() {
@@ -84,7 +93,27 @@ class HomeFragment : Fragment() {
         }
         binding.onSaleRv.adapter = onSaleProductsAdapter
 
+        searchAdapter= SearchAdapter{
+            val action = ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+        binding.searchResultsRv.layoutManager= LinearLayoutManager(requireContext())
+        binding.searchResultsRv.adapter=searchAdapter
 
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val query = newText?.trim().orEmpty()
+
+                if (query.isNotEmpty()) {
+                    viewModel.onSearchChanged(query)
+                    binding.searchResultsRv.visibility = View.VISIBLE
+                } else {
+                    binding.searchResultsRv.visibility = View.GONE
+                }
+                return true
+            }
+            override fun onQueryTextSubmit(query: String?) = true
+        })
     }
 
     private suspend fun initBanner() {

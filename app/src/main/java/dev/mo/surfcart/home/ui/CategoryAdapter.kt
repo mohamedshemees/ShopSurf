@@ -1,6 +1,9 @@
 package dev.mo.surfcart.home.ui
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,23 +17,27 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var categories = listOf<Category>()
+    private var currentCategory: Int = categories.firstOrNull()?.id ?: -1
 
-    // Updated submitList to use MyDiffUtil
     fun submitList(newList: List<Category>) {
+        if (newList.isNotEmpty()) {
+            if (currentCategory == -1 || newList.none { it.id == currentCategory }) {
+                currentCategory = newList.first().id
+            }
+        }
         val diffCallback = MyDiffUtil(
             oldList = categories,
             newList = newList,
-            areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }, // Assuming 'id' is the unique identifier
-            areContentsTheSame = { oldItem, newItem -> oldItem == newItem } // Default content check, or define specific fields
+            areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id },
+            areContentsTheSame = { oldItem, newItem -> oldItem == newItem }
         )
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         categories = newList
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class CategoryViewHolder(
+    inner class CategoryViewHolder(
         categoryItem: ItemCategoryBinding,
-        var onClick: (Long) -> Unit
     ) : RecyclerView.ViewHolder(categoryItem.root) {
         private val binding = categoryItem
         fun bind(category: Category) {
@@ -39,8 +46,15 @@ class CategoryAdapter(
                 .load(category.categoryThumbnail)
                 .centerCrop()
                 .into(binding.categoryImage)
+            if (category.id == currentCategory) {
+                binding.gradientOverlay.visibility = View.VISIBLE
+            } else {
+                binding.gradientOverlay.visibility = View.GONE
+            }
             binding.root.setOnClickListener {
+                currentCategory = category.id
                 onClick(category.id.toLong())
+                notifyDataSetChanged()
             }
         }
     }
@@ -48,7 +62,7 @@ class CategoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding =
             ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CategoryViewHolder(binding, onClick)
+        return CategoryViewHolder(binding)
     }
 
     override fun getItemCount(): Int = categories.size

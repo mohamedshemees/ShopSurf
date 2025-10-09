@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,9 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             val loggedIn = checkIfLoggedInUseCase()
-            _state.value = if (loggedIn) MainUiState.ShowHome else MainUiState.ShowLogin
+            _state.update {
+                if (loggedIn) MainUiState.ShowHome
+                else MainUiState.ShowLogin}
         }
     }
 

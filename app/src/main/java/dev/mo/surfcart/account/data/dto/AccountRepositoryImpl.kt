@@ -4,8 +4,9 @@ import dev.mo.surfcart.account.domain.repository.AccountRepository
 import dev.mo.surfcart.checkout.ui.PaymentMethodItem
 import dev.mo.surfcart.core.safeSupabaseCall
 import io.github.jan.supabase.postgrest.Postgrest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import java.util.UUID
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
@@ -13,9 +14,9 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
     override suspend fun getCustomerAddresses(): List<CustomerAddress> {
         return safeSupabaseCall {
-                postgrest.rpc("get_customer_addresses")
-                    .decodeList<CustomerAddress>()
-            }
+            postgrest.rpc("get_customer_addresses")
+                .decodeList<CustomerAddress>()
+        }
     }
 
 
@@ -23,6 +24,18 @@ class AccountRepositoryImpl @Inject constructor(
         return safeSupabaseCall {
             postgrest.rpc("get_payment_methods")
                 .decodeList<PaymentMethodItem>()
+        }
+    }
+
+    override suspend fun placeOrder(addressId: UUID, paymentMethodId: UUID) {
+        return safeSupabaseCall {
+            postgrest.rpc("place_order",
+            JsonObject(
+                mapOf("address_id" to JsonPrimitive(addressId.toString()),
+                "payment_method_id" to JsonPrimitive(paymentMethodId.toString())
+                ),
+            )
+            )
         }
     }
 }

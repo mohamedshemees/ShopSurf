@@ -87,6 +87,17 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSearchResult(query:String): List<Product> {
+        return safeSupabaseCall {
+            postgrest.rpc(
+                "search_products",
+                JsonObject(mapOf("search_term" to JsonPrimitive(query)))
+            )
+                .decodeList<ProductDto>()
+                .map { it.toProduct() }
+        }
+    }
+
     override suspend fun getProductDetails(productId: Long): Map<String, String> {
         val details: ProductDetails = safeSupabaseCall {
             postgrest.rpc(

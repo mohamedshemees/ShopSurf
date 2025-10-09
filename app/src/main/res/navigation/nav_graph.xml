@@ -19,7 +19,7 @@
     <fragment
 
         android:id="@+id/productsFragment"
-        android:name="dev.mo.surfcart.home.ui.ChildCategoryFragment">
+        android:name="dev.mo.surfcart.products.ui.ChildCategoryFragment">
 
         <argument
             android:name="categoryId"

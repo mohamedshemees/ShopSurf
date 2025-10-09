@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentContentMain) { v, insets ->
-            v.setPadding(0, 0, 0, insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom)
+            v.setPadding(0, 0, 0, 0)
             insets
         }
     }

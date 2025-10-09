@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         buildFeatures {
-            buildConfig = true // Enable BuildConfig generation
+            buildConfig = true
         }
 
         applicationId = "dev.mo.surfcart"
@@ -71,8 +71,6 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
 
 
-
-
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.annotation)
 
@@ -109,11 +107,11 @@ dependencies {
 
 
     // Navigation Component (Make sure the version is stable)
-    implementation(libs.androidx.navigation.fragment.ktx)  // Use latest stable version
+    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
     // Lifecycle (Ensure compatibility with AppCompat)
-    implementation(libs.androidx.lifecycle.runtime.ktx.v287)  // Use version 2.7.x
+    implementation(libs.androidx.lifecycle.runtime.ktx.v287)
     implementation(libs.androidx.lifecycle.common)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
@@ -124,7 +122,7 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.utils)
-    implementation(libs.kotlinx.serialization.json) // Use the latest version
+    implementation(libs.kotlinx.serialization.json)
 }
 
 

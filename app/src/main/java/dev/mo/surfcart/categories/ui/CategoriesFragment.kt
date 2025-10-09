@@ -16,8 +16,8 @@ import com.google.android.material.carousel.CarouselSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentCategoriesBinding
 import dev.mo.surfcart.home.ui.CategoryAdapter
-import dev.mo.surfcart.home.ui.ChildCategoryFragmentArgs
 import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
+import dev.mo.surfcart.products.ui.ChildCategoryFragmentArgs
 import dev.mo.surfcart.products.ui.ProductAdapter
 import kotlinx.coroutines.launch
 
