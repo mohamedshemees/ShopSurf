@@ -1,7 +1,6 @@
 package dev.mo.surfcart
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels

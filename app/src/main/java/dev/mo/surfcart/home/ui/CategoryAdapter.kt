@@ -1,14 +1,12 @@
 package dev.mo.surfcart.home.ui
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import dev.mo.surfcart.core.adapter.MyDiffUtil // Import your MyDiffUtil
+import dev.mo.surfcart.core.adapter.MyDiffUtil
 import dev.mo.surfcart.core.entity.Category
 import dev.mo.surfcart.databinding.ItemCategoryBinding
 

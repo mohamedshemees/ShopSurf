@@ -1,7 +1,6 @@
 package dev.mo.surfcart.core
 
 import android.util.Log
-import io.github.jan.supabase.exceptions.BadRequestRestException
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.exceptions.UnknownRestException
 import io.ktor.client.plugins.HttpRequestTimeoutException

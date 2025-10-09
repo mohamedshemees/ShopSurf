@@ -1,7 +1,6 @@
 package dev.mo.surfcart.checkout.usecase
 
 import dev.mo.surfcart.account.domain.repository.AccountRepository
-import dev.mo.surfcart.checkout.ui.PaymentMethodItem
 import java.util.UUID
 import javax.inject.Inject
 

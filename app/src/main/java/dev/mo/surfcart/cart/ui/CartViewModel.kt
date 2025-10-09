@@ -8,7 +8,6 @@ import dev.mo.surfcart.cart.usecase.GetCartItemsUseCase
 import dev.mo.surfcart.cart.usecase.IncreaseQuantityUseCase
 import dev.mo.surfcart.cart.usecase.RemoveProductFromCartUseCase
 import dev.mo.surfcart.core.BaseViewModel
-import dev.mo.surfcart.core.DomainException
 import dev.mo.surfcart.core.DuplicateEntryException
 import dev.mo.surfcart.core.UiEvent
 import kotlinx.coroutines.flow.MutableStateFlow

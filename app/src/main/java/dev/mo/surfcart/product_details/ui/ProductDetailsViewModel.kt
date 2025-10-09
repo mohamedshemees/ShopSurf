@@ -2,8 +2,6 @@ package dev.mo.surfcart.product_details.ui
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mo.surfcart.core.BaseViewModel
-import dev.mo.surfcart.core.DomainException
-import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.product_details.usecase.GetProductByIdUseCase
 import dev.mo.surfcart.product_details.usecase.GetProductDetailsUseCase
 import dev.mo.surfcart.products.usecase.GetProductsBySubCategoryUseCase
