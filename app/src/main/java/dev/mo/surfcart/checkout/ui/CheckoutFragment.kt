@@ -69,7 +69,8 @@ class CheckoutFragment : Fragment() {
                 binding.orderItemsTv.visibility = contentVisibility
                 binding.deliveryAddressTv.visibility = contentVisibility
                 binding.paymentMethodTv.visibility = contentVisibility
-                binding.placeOrderButton.visibility = contentVisibility
+                binding.placeOrderButton.visibility =contentVisibility
+
 
                 checkoutProductsAdapter.submitList(state.checkoutProducts)
 

@@ -44,7 +44,7 @@ class CategoryAdapter(
                 .load(category.categoryThumbnail)
                 .centerCrop()
                 .into(binding.categoryImage)
-            if (category.id == currentCategory) {
+            if (category.id == currentCategory && category.parentId!=null) {
                 binding.gradientOverlay.visibility = View.VISIBLE
             } else {
                 binding.gradientOverlay.visibility = View.GONE

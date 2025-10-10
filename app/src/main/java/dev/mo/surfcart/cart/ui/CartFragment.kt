@@ -37,7 +37,8 @@ class CartFragment : Fragment() {
             onItemDecrement = cartViewModel::decreaseQuantity
         )
         cartItemRecyclerView.adapter = cartItemsAdapter
-
+        binding.emptyCartView.visibility = if (cartViewModel.cartItems.value.isEmpty()) View.VISIBLE else View.GONE
+        binding.checkoutButton.visibility = if (cartViewModel.cartItems.value.isEmpty()) View.GONE else View.VISIBLE
         binding.checkoutButton.setOnClickListener {
             navigateToCheckout()
         }
@@ -58,7 +59,6 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartItems.collect {
                 cartItemsAdapter.updateCartItems(it)
