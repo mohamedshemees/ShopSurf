@@ -53,10 +53,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
-        ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentContentMain) { v, insets ->
-            v.setPadding(0, 0, 0, 0)
-            insets
-        }
     }
 
      private fun initViews(isLoggedIn:Boolean) {
@@ -74,7 +70,11 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.registrationFragment, R.id.loginFragment,R.id.onboardingFragment -> {
+                R.id.registrationFragment,
+                R.id.loginFragment,
+                R.id.onboardingFragment,
+                R.id.productsDetailsFragment,
+                R.id.checkoutFragment-> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
                 else -> {

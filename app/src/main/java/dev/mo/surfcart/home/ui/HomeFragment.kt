@@ -1,6 +1,8 @@
 package dev.mo.surfcart.home.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentHomeBinding
 import dev.mo.surfcart.product_details.ui.ProductDetailsFragmentDirections
@@ -93,12 +96,12 @@ class HomeFragment : Fragment() {
         }
         binding.onSaleRv.adapter = onSaleProductsAdapter
 
-        searchAdapter= SearchAdapter{
+        searchAdapter = SearchAdapter {
             val action = ProductDetailsFragmentDirections.actionGlobalProductDetailsFragment(it)
             findNavController().navigate(action)
         }
-        binding.searchResultsRv.layoutManager= LinearLayoutManager(requireContext())
-        binding.searchResultsRv.adapter=searchAdapter
+        binding.searchResultsRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.searchResultsRv.adapter = searchAdapter
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -112,6 +115,7 @@ class HomeFragment : Fragment() {
                 }
                 return true
             }
+
             override fun onQueryTextSubmit(query: String?) = true
         })
     }
@@ -124,21 +128,62 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun banners(image: List<String>) {
-        binding.bannerVp.adapter = SliderApapter(image, binding.bannerVp)
-        binding.bannerVp.clipToPadding = false
-        binding.bannerVp.clipChildren = false
-        binding.bannerVp.offscreenPageLimit = 3
-        binding.bannerVp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        val composotePageTransformation = CompositePageTransformer().apply {
-            addTransformer(MarginPageTransformer(40))
-        }
-        binding.bannerVp.setPageTransformer(composotePageTransformation)
+    private var bannerHandler: Handler? = null
+    private var bannerRunnable: Runnable? = null
+    private var isUserSwiping = false
 
-        if (image.size > 1) {
+    private fun banners(images: List<String>) {
+        val viewPager = binding.bannerVp
+        viewPager.adapter = SliderApapter(images, viewPager)
+
+        if (images.size > 1) {
             binding.dotIndicator.visibility = View.VISIBLE
-            binding.dotIndicator.attachTo(binding.bannerVp)
+            binding.dotIndicator.attachTo(viewPager)
+
+            bannerHandler = Handler(Looper.getMainLooper())
+            bannerRunnable = object : Runnable {
+                override fun run() {
+                    if (!isUserSwiping) {
+                        val nextItem = (viewPager.currentItem + 1) % images.size
+                        viewPager.setCurrentItem(nextItem, true)
+                    }
+                    bannerHandler?.postDelayed(this, 4000) // 4 sec for natural rhythm
+                }
+            }
+
+            // Page scroll callback to detect manual swiping
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+                    when (state) {
+                        ViewPager2.SCROLL_STATE_DRAGGING -> isUserSwiping = true
+                        ViewPager2.SCROLL_STATE_IDLE -> isUserSwiping = false
+                    }
+                }
+            })
+
+            startAutoScroll()
+        } else {
+            binding.dotIndicator.visibility = View.GONE
         }
     }
-}
 
+    private fun startAutoScroll() {
+        bannerHandler?.removeCallbacks(bannerRunnable!!)
+        bannerHandler?.postDelayed(bannerRunnable!!, 4000)
+    }
+
+    private fun stopAutoScroll() {
+        bannerHandler?.removeCallbacks(bannerRunnable!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAutoScroll()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopAutoScroll()
+    }
+}

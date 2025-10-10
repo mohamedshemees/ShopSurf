@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/product_title"
-        android:textColor="@color/black"
+        android:textColor="@color/md_theme_onPrimaryContainer"
         android:layout_marginStart="10dp"
         android:textSize="@dimen/text_medium_size"
         app:layout_constraintStart_toEndOf="@id/product_thumbnail"
@@ -51,10 +51,11 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="4dp"
         android:textSize="@dimen/text_small_size"
-        app:layout_constraintBottom_toBottomOf="@id/qty_label"
-        app:layout_constraintStart_toStartOf="@+id/product_name"
-        app:layout_constraintTop_toTopOf="@+id/product_price"
+        app:layout_constraintBottom_toBottomOf="@+id/qty_label"
+        app:layout_constraintStart_toEndOf="@+id/qty_label"
+        app:layout_constraintTop_toTopOf="@+id/qty_label"
         tools:text="3" />
 
     <TextView

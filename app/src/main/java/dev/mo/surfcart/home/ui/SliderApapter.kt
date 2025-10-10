@@ -40,8 +40,9 @@ class SliderApapter(private var slideritems:List<String>,
         fun setImage(sliderItems:String,context: Context){
             Glide.with(context)
                 .load(sliderItems)
+                .centerCrop()
+                .dontAnimate()
                 .into(binding.imagSlide)
-
         }
 
     }

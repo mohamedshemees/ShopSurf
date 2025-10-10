@@ -110,5 +110,8 @@
     <action
         android:id="@+id/action_global_productDetailsFragment"
         app:destination="@id/productsDetailsFragment" />
+    <action
+        android:id="@+id/action_global_home_screen"
+        app:destination="@id/homeFragment" />
 
 </navigation>

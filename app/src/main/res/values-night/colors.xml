@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#00F8DE</color>
+    <!-- Core Dark Theme Colors - Lighter Approach -->
+    <color name="md_theme_background">#161515</color> <!-- Lighter dark grey -->
+    <color name="md_theme_surface">#3A3A3C</color> <!-- Slightly lighter surface on the dark background -->
+    <color name="md_theme_onBackground">#E4E4E6</color> <!-- Light text for good contrast -->
+    <color name="md_theme_onSurface">#E4E4E6</color> <!-- Light text for good contrast -->
+
+    <!-- Primary Colors (Adjusted for Lighter Dark Theme) -->
+    <!-- Original md_theme_primary: #365E9D -->
+    <color name="md_theme_primary">#8FAEEA</color> <!-- Adjusted for new background, still vibrant -->
+    <color name="md_theme_onPrimary">#002559</color> <!-- Darker blue for text/icon on primary -->
+    <color name="md_theme_primaryContainer">#20407C</color> <!-- Darker blue container -->
+    <color name="md_theme_onPrimaryContainer">#CFDFFF</color> <!-- Lighter blue text on container -->
+
+    <!-- Secondary Colors (Adjusted for Lighter Dark Theme) -->
+    <!-- Original md_theme_secondary: #515F79 -->
+    <color name="md_theme_secondary">#AEBACF</color> <!-- Adjusted secondary -->
+    <color name="md_theme_onSecondary">#253048</color> <!-- Dark text/icon on secondary -->
+    <color name="md_theme_secondaryContainer">#3C465E</color> <!-- Darker secondary container -->
+    <color name="md_theme_onSecondaryContainer">#D6E2F8</color> <!-- Lighter text on container -->
+
+    <!-- Tertiary Colors (Adjusted for Lighter Dark Theme) -->
+    <!-- Original md_theme_tertiary: #4A5D75 -->
+    <color name="md_theme_tertiary">#A5B4C8</color> <!-- Adjusted tertiary -->
+    <color name="md_theme_onTertiary">#202E45</color> <!-- Dark text/icon on tertiary -->
+    <color name="md_theme_tertiaryContainer">#38455C</color> <!-- Darker tertiary container -->
+    <color name="md_theme_onTertiaryContainer">#D1DFF3</color> <!-- Lighter text on container -->
+
+    <!-- Error Colors (Standard Material Dark Theme) -->
+    <color name="md_theme_error">#FFB4AB</color>
+    <color name="md_theme_success">#739D04</color>
+    <color name="md_theme_onError">#690005</color>
+    <color name="md_theme_errorContainer">#93000A</color>
+    <color name="md_theme_onErrorContainer">#FFDAD6</color>
+
+    <!-- Other UI Colors (Adjusted) -->
+    <color name="md_theme_surfaceVariant">#42444A</color> <!-- Adjusted surface variant -->
+    <color name="md_theme_onSurfaceVariant">#C0C2C8</color> <!-- Adjusted text on surface variant -->
+    <color name="md_theme_outline">#8A8D93</color> <!-- Adjusted outline -->
+    <color name="md_theme_outlineVariant">#42444A</color>
+
+    <color name="md_theme_scrim">#000000</color>
+    <color name="md_theme_inverseSurface">#E4E4E6</color>
+    <color name="md_theme_inverseOnSurface">#2C2C2E</color>
+    <color name="md_theme_inversePrimary">#365E9D</color> <!-- Keep original primary for inverse if needed -->
+
+    <!-- Fixed and Dim colors (Adjusted) -->
+    <color name="md_theme_primaryFixed">#CFDFFF</color>
+    <color name="md_theme_onPrimaryFixed">#001A3F</color>
+    <color name="md_theme_primaryFixedDim">#8FAEEA</color>
+    <color name="md_theme_onPrimaryFixedVariant">#20407C</color>
+
+    <color name="md_theme_secondaryFixed">#D6E2F8</color>
+    <color name="md_theme_onSecondaryFixed">#101B33</color>
+    <color name="md_theme_secondaryFixedDim">#AEBACF</color>
+    <color name="md_theme_onSecondaryFixedVariant">#3C465E</color>
+
+    <color name="md_theme_tertiaryFixed">#D1DFF3</color>
+    <color name="md_theme_onTertiaryFixed">#0A1C33</color>
+    <color name="md_theme_tertiaryFixedDim">#A5B4C8</color>
+    <color name="md_theme_onTertiaryFixedVariant">#38455C</color>
+
+    <!-- Surface Container Colors (Adjusted for Lighter Dark) -->
+    <color name="md_theme_surfaceDim">#212123</color>      <!-- Darkest in this lighter scheme -->
+    <color name="md_theme_surfaceBright">#464648</color>    <!-- Brightest in this lighter scheme -->
+    <color name="md_theme_surfaceContainerLowest">#1C1C1E</color>
+    <color name="md_theme_surfaceContainerLow">#272729</color>
+    <color name="md_theme_surfaceContainer">#303032</color>
+    <color name="md_theme_surfaceContainerHigh">#3B3B3D</color>
+    <color name="md_theme_surfaceContainerHighest">#464648</color>
+
+    <!-- Custom colors from your light theme, adapted for the new dark mode -->
+    <color name="chip_background_default">#42444A</color> <!-- Using surfaceVariant -->
+    <color name="chip_background_selected">#8FAEEA</color> <!-- Using adjusted primary -->
+    <color name="chip_stroke">#8A8D93</color> <!-- Using adjusted outline -->
+    <color name="chip_text_default">#E4E4E6</color> <!-- Light text -->
+    <color name="chip_text_selected">#002559</color> <!-- onPrimary -->
+
+    <color name="light_blue">#20407C</color>
+</resources>

@@ -10,6 +10,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,6 +23,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.tbuonomo.viewpagerdotsindicator.pxToDp
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.R
 import dev.mo.surfcart.cart.ui.CartViewModel
@@ -87,8 +90,6 @@ class ProductDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 productDetailsViewModel.uiState.collect { state ->
                     binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-                    binding.contentGroup.visibility = if (state.isLoading) View.GONE else View.VISIBLE
-
                     if (!state.isLoading) {
                         state.product?.let { product -> bindProductData(product) }
                         populateProductDetails(state.productDetails)
@@ -147,18 +148,31 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun showTopSnackbar(message: String, isError: Boolean) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val snackbar = Snackbar.make(requireActivity().findViewById(R.id.main_activity), message, Snackbar.LENGTH_SHORT)
+
         val view = snackbar.view
         val params = view.layoutParams as FrameLayout.LayoutParams
+
         params.gravity = Gravity.TOP
+
+        val topInset = ViewCompat.getRootWindowInsets(requireActivity().window.decorView)
+            ?.getInsets(WindowInsetsCompat.Type.statusBars())
+            ?.top ?: 0
+        params.topMargin = topInset
+
         view.layoutParams = params
 
-        val color = ContextCompat.getColor(requireContext(), if (isError)  R.color.md_theme_error else R.color.md_theme_success)
+        // Style it
+        val color = ContextCompat.getColor(
+            requireContext(),
+            if (isError) R.color.md_theme_error else R.color.md_theme_success
+        )
         snackbar.setBackgroundTint(color)
         snackbar.setTextColor(Color.WHITE)
 
         snackbar.show()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
