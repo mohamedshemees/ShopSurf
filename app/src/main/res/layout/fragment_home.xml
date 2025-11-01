@@ -20,7 +20,19 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/search_results_shimmer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                app:shimmer_duration="2000">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_results_shimmer_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_search_result_shimmer" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/searchResultsRv"
                 android:layout_width="match_parent"
@@ -28,22 +40,37 @@
                 android:background="@color/md_theme_background"
                 android:elevation="8dp"
                 android:padding="8dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:listitem="@layout/item_cart_product"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                 />
+
         </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/bannerVp"
             android:layout_width="match_parent"
             android:layout_height="160dp"
+            android:minHeight="160dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_container" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/bannerShimmer"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:minHeight="160dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_container" >
+            <include layout="@layout/item_banner_shimmer"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
         <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/dotIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:minHeight="160dp"
             app:dotsColor="@color/lightGray"
             app:dotsCornerRadius="8dp"
             app:dotsSize="6dp"
@@ -59,9 +86,35 @@
             android:id="@+id/categoryRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="300dp"
             android:layout_marginVertical="20dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/dotIndicator"
-            tools:orientation="horizontal" />
+            app:spanCount="2"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_category" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/categoryshimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/dotIndicator"
+            app:shimmer_duration="2000">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoryshimmerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_category_shimmer" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
             android:id="@+id/on_sale_header"
@@ -75,12 +128,40 @@
             app:layout_constraintTop_toBottomOf="@id/categoryRv" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/best_seller_Rv"
+            android:id="@+id/on_sale_Rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/best_seller_tv"
-            tools:orientation="vertical" />
+            android:minHeight="300dp"
+            android:layout_marginVertical="20dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/on_sale_header"
+            app:spanCount="2"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_product1" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:padding="8dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/on_sale_header"
+            app:shimmer_duration="2000">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shimmerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_product1_shimmer" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
             android:id="@+id/best_seller_tv"
@@ -94,25 +175,14 @@
             app:layout_constraintTop_toBottomOf="@id/on_sale_Rv" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/on_sale_Rv"
+            android:id="@+id/best_seller_Rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:padding="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/on_sale_header"
+            android:minHeight="300dp"
+            android:layout_marginVertical="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/best_seller_tv"
             tools:orientation="vertical" />
-
-        <ProgressBar
-            android:id="@+id/progressBarSlider"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintBottom_toBottomOf="@+id/bannerVp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchview" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

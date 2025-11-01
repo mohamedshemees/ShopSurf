@@ -1,0 +1,98 @@
+<com.facebook.shimmer.ShimmerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chip_selected"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:paddingBottom="10dp"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:paddingBottom="10dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/product_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/blue"
+            app:shapeAppearanceOverlay="@style/OvalImageShape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/sale_percentage"
+            android:layout_width="32dp"
+            android:layout_height="18dp"
+            android:background="#E0E0E0"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/product_name"
+            android:layout_width="120dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:background="#E0E0E0"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_thumbnail"/>
+
+        <View
+            android:id="@+id/product_description"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:background="#E0E0E0"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_name"/>
+
+        <View
+            android:id="@+id/price"
+            android:layout_width="50dp"
+            android:layout_height="16dp"
+            android:background="#E0E0E0"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/product_description"/>
+
+        <View
+            android:id="@+id/after_sale"
+            android:layout_width="50dp"
+            android:layout_height="16dp"
+            android:background="#E0E0E0"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/price"
+            app:layout_constraintTop_toTopOf="@id/price"/>
+
+        <View
+            android:id="@+id/ic_rating"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="#E0E0E0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/price"
+            app:layout_constraintTop_toBottomOf="@+id/price"
+            android:layout_marginTop="10dp"/>
+            
+        <View
+            android:id="@+id/rating"
+            android:layout_width="40dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="10dp"
+            android:background="#E0E0E0"
+            app:layout_constraintBottom_toBottomOf="@+id/ic_rating"
+            app:layout_constraintStart_toEndOf="@+id/ic_rating"
+            app:layout_constraintTop_toTopOf="@+id/ic_rating" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>

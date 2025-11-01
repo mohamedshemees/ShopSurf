@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_surface"
+    android:fillViewport="true"
+    tools:context=".order_tracking.OrderTrackingFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/orderDetailsCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/orderIdLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order ID" />
+
+                <TextView
+                    android:id="@+id/orderId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/md_theme_onSurface"
+                    android:textStyle="bold"
+                    tools:text="#12345-67890" />
+
+                <TextView
+                    android:id="@+id/orderDateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Order Date" />
+
+                <TextView
+                    android:id="@+id/orderDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/md_theme_onSurface"
+                    tools:text="July 2, 2024" />
+
+                <TextView
+                    android:id="@+id/addressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Shipping Address" />
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/md_theme_onSurface"
+                    tools:text="123 Surf St, Ocean View, CA" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/trackingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Track Order"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/orderDetailsCard" />
+
+        <!-- Order Tracking UI -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/trackingLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trackingTitle">
+
+            <!-- Icons -->
+            <ImageView
+                android:id="@+id/iconPending"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_pending" 
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iconProcessing"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_processing"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iconShipped"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_shipped"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+                app:layout_constraintStart_toEndOf="@+id/guidelineEnd"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iconDelivered"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_delivered"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <!-- Guideline for center alignment -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+                
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.66" />
+
+            <!-- Progress Bars -->
+            <View
+                android:id="@+id/progress1"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:background="@color/md_theme_outline_variant" 
+                app:layout_constraintStart_toEndOf="@id/iconPending"
+                app:layout_constraintEnd_toStartOf="@id/iconProcessing"
+                app:layout_constraintTop_toTopOf="@+id/iconPending"
+                app:layout_constraintBottom_toBottomOf="@+id/iconPending"/>
+
+            <View
+                android:id="@+id/progress2"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:background="@color/md_theme_outline_variant"
+                app:layout_constraintStart_toEndOf="@id/iconProcessing"
+                app:layout_constraintEnd_toStartOf="@id/iconShipped"
+                app:layout_constraintTop_toTopOf="@+id/iconProcessing"
+                app:layout_constraintBottom_toBottomOf="@+id/iconProcessing"/>
+
+            <View
+                android:id="@+id/progress3"
+                android:layout_width="0dp"
+                android:layout_height="4dp"
+                android:background="@color/md_theme_outline_variant"
+                app:layout_constraintStart_toEndOf="@id/iconShipped"
+                app:layout_constraintEnd_toStartOf="@id/iconDelivered"
+                app:layout_constraintTop_toTopOf="@+id/iconShipped"
+                app:layout_constraintBottom_toBottomOf="@+id/iconShipped"/>
+
+            <!-- Labels -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pending"
+                app:layout_constraintTop_toBottomOf="@+id/iconPending"
+                app:layout_constraintStart_toStartOf="@+id/iconPending"
+                app:layout_constraintEnd_toEndOf="@+id/iconPending" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Processing"
+                app:layout_constraintTop_toBottomOf="@+id/iconProcessing"
+                app:layout_constraintStart_toStartOf="@+id/iconProcessing"
+                app:layout_constraintEnd_toEndOf="@+id/iconProcessing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android.layout_height="wrap_content"
+                android:text="Shipped"
+                app:layout_constraintTop_toBottomOf="@+id/iconShipped"
+                app:layout_constraintStart_toStartOf="@+id/iconShipped"
+                app:layout_constraintEnd_toEndOf="@+id/iconShipped"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivered"
+                app:layout_constraintTop_toBottomOf="@+id/iconDelivered"
+                app:layout_constraintStart_toStartOf="@+id/iconDelivered"
+                app:layout_constraintEnd_toEndOf="@+id/iconDelivered"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

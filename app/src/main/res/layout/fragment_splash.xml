@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashFragment">
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="match_parent"
-        android:indeterminateTint="@color/blue"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:indeterminateTint="@color/blue"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:visibility="visible"-->
+<!--        android:layout_gravity="center"-->
+<!--        />-->
 
 </FrameLayout>

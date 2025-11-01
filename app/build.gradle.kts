@@ -114,6 +114,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx.v287)
     implementation(libs.androidx.lifecycle.common)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation(libs.shimmer)
 
     //supabase
     implementation(libs.postgrest.kt)

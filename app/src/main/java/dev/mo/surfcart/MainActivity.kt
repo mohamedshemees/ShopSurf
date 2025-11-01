@@ -32,13 +32,13 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.state.collect { state ->
                 when (state) {
-                    is MainViewModel.MainUiState.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is MainViewModel.MainUiState.Loading ->{}
                     is MainViewModel.MainUiState.ShowHome -> {
-                        binding.progressbar.visibility = View.GONE
+                      //  binding.progressbar.visibility = View.GONE
                         initViews(true)
                     }
                     is MainViewModel.MainUiState.ShowLogin -> {
-                        binding.progressbar.visibility = View.GONE
+                      //  binding.progressbar.visibility = View.GONE
                         initViews(false)
                     }
                 }
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
     }
