@@ -30,7 +30,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_results_shimmer_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
+                    android:minHeight="300dp"
                     tools:listitem="@layout/item_search_result_shimmer" />
             </com.facebook.shimmer.ShimmerFrameLayout>
             <androidx.recyclerview.widget.RecyclerView

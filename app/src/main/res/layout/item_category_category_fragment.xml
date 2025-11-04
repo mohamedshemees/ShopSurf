@@ -26,4 +26,4 @@
         android:textSize="18sp"
         android:background="@color/dark_scrim" />
 
-    </com.google.android.material.carousel.MaskableFrameLayout>
+</com.google.android.material.carousel.MaskableFrameLayout>
