@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -33,15 +32,17 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.state.collect { state ->
                 when (state) {
-                    is MainViewModel.MainUiState.Loading ->{}
+                    is MainViewModel.MainUiState.Loading -> {}
                     is MainViewModel.MainUiState.ShowHome -> {
-                      //  binding.progressbar.visibility = View.GONE
+                        //  binding.progressbar.visibility = View.GONE
                         initViews(true)
                     }
+
                     is MainViewModel.MainUiState.ShowLogin -> {
-                      //  binding.progressbar.visibility = View.GONE
+                        //  binding.progressbar.visibility = View.GONE
                         initViews(false)
                     }
+
                     is MainViewModel.MainUiState.UpdateAppTheme -> {
 
                     }
@@ -59,15 +60,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-     private fun initViews(isLoggedIn:Boolean) {
-         val navHostFragment = supportFragmentManager
-             .findFragmentById(R.id.fragment_content_main) as NavHostFragment
-         navController = navHostFragment.navController
-         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-         navGraph.setStartDestination(
-             if (isLoggedIn) R.id.homeFragment
-             else R.id.loginFragment
-         )
+    private fun initViews(isLoggedIn: Boolean) {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_content_main) as NavHostFragment
+        navController = navHostFragment.navController
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(
+            if (isLoggedIn) R.id.homeFragment
+            else R.id.loginFragment
+        )
         navController.graph = navGraph
         navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
@@ -78,9 +79,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.loginFragment,
                 R.id.onboardingFragment,
                 R.id.productsDetailsFragment,
-                R.id.checkoutFragment-> {
+                R.id.checkoutFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
+
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }

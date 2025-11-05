@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            settingsRepository.enableDarkMode().collect { isDarkTheme ->
+            settingsRepository.getCurrentTheme().collect { isDarkTheme ->
                     AppCompatDelegate.setDefaultNightMode(
                         if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES
                         else AppCompatDelegate.MODE_NIGHT_NO
