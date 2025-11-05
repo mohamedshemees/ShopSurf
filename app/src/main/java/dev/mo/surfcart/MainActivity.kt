@@ -34,12 +34,10 @@ class MainActivity : AppCompatActivity() {
                 when (state) {
                     is MainViewModel.MainUiState.Loading -> {}
                     is MainViewModel.MainUiState.ShowHome -> {
-                        //  binding.progressbar.visibility = View.GONE
                         initViews(true)
                     }
 
                     is MainViewModel.MainUiState.ShowLogin -> {
-                        //  binding.progressbar.visibility = View.GONE
                         initViews(false)
                     }
 

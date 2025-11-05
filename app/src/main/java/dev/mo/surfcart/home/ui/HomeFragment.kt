@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    // region Properties
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
@@ -40,9 +39,7 @@ class HomeFragment : Fragment() {
     private var bannerHandler: Handler? = null
     private var bannerRunnable: Runnable? = null
     private var isUserSwiping = false
-    // endregion
 
-    // region Lifecycle Methods
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,9 +63,7 @@ class HomeFragment : Fragment() {
         super.onPause()
         stopAutoScroll()
     }
-    // endregion
 
-    // region Initialization
     private fun initViews() {
         setupCategoriesRecyclerView()
         setupCategoriesShimmerRecyclerView()
@@ -150,9 +145,7 @@ class HomeFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean = true
         })
     }
-    // endregion
 
-    // region Observers
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -195,9 +188,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    // endregion
 
-    // region Banner
     private suspend fun initBanner() {
         viewModel.banners.collect {
             setupBanners(it)
@@ -252,5 +243,4 @@ class HomeFragment : Fragment() {
             bannerHandler?.removeCallbacks(runnable)
         }
     }
-    // endregion
 }
