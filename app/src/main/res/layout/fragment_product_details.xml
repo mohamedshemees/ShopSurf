@@ -1,79 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/md_theme_surface">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/product_details_container"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Product Thumbnail -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/productThumbnail"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Product Image"
-            app:shapeAppearanceOverlay="@style/OvalImageShape"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@drawable/mosalah" />
-
-        <!-- Title -->
-        <TextView
-            android:id="@+id/productTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/md_theme_onSurface"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/productThumbnail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Product Name" />
-
-        <!-- Description -->
-        <TextView
-            android:id="@+id/productDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:textColor="@color/md_theme_onSurfaceVariant"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/productTitle"
-            app:layout_constraintStart_toStartOf="@id/productTitle"
-            app:layout_constraintEnd_toEndOf="@id/productTitle"
-            tools:text="Product description goes here" />
-
-        <!-- Category Details -->
-        <LinearLayout
-            android:id="@+id/categoryDetailsContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/productDescription"
-            app:layout_constraintStart_toStartOf="@id/productTitle"
-            app:layout_constraintEnd_toEndOf="@id/productTitle" />
-
-        <!-- Price and Add to Cart -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/priceAndCartLayout"
-            android:layout_width="0dp"
+            android:id="@+id/product_details_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/categoryDetailsContainer"
-            app:layout_constraintStart_toStartOf="@id/productTitle"
-            app:layout_constraintEnd_toEndOf="@id/productTitle">
+            android:padding="16dp">
 
+            <!-- Shimmer for Product Details -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/product_details_shimmer_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shimmer_duration="2000">
+                <include layout="@layout/product_details_shimmer" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <!-- Product Thumbnail -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/productThumbnail"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="Product Image"
+                android:elevation="4dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/OvalImageShape"
+                tools:src="@drawable/mosalah" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/productTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/md_theme_onSurface"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/productThumbnail"
+                tools:text="Product Name" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/productDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:textColor="@color/md_theme_onSurfaceVariant"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@id/productTitle"
+                app:layout_constraintStart_toStartOf="@id/productTitle"
+                app:layout_constraintTop_toBottomOf="@id/productTitle"
+                tools:text="Product description goes here" />
+
+            <!-- Category Details -->
+            <LinearLayout
+                android:id="@+id/categoryDetailsContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                app:layout_constraintEnd_toEndOf="@id/productTitle"
+                app:layout_constraintStart_toStartOf="@id/productTitle"
+                app:layout_constraintTop_toBottomOf="@id/productDescription" />
+
+            <!-- Price -->
             <TextView
                 android:id="@+id/productPrice"
                 android:layout_width="wrap_content"
@@ -81,101 +90,113 @@
                 android:textColor="@color/md_theme_tertiary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@+id/addToCartButton"
+                app:layout_constraintStart_toStartOf="@id/productTitle"
                 tools:text="$99.99" />
 
+            <!-- Add to Cart Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addToCartButton"
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_to_cart"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/md_theme_tertiary"
+                android:elevation="6dp"
                 android:icon="@drawable/ic_cart_outlined"
                 android:iconTint="@color/md_theme_onPrimary"
-                android:textColor="@color/md_theme_onPrimary"
-                android:backgroundTint="@color/md_theme_tertiary"
-                android:insetTop="8dp"
                 android:insetBottom="8dp"
+                android:insetTop="8dp"
                 android:paddingHorizontal="20dp"
-                android:elevation="6dp"
+                android:text="@string/add_to_cart"
+                android:textColor="@color/md_theme_onPrimary"
                 app:cornerRadius="24dp"
                 app:iconGravity="textEnd"
-                app:rippleColor="@color/md_theme_primaryContainer"
+                app:layout_constraintEnd_toEndOf="@id/productTitle"
+                app:layout_constraintTop_toBottomOf="@id/categoryDetailsContainer"
+                app:rippleColor="@color/md_theme_primaryContainer" />
+
+            <!-- Barrier to position Similar Products section correctly -->
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/details_barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="addToCartButton,productPrice,product_details_shimmer_layout" />
+
+            <!-- Shimmer for Similar Products Section -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/similar_products_shimmer_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/details_barrier"
+                app:shimmer_duration="2000">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Shimmer for RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/shimmerRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_product1_shimmer" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <!-- Similar Products Title -->
+            <TextView
+                android:id="@+id/similarProductsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/md_theme_primary"
+                android:padding="10dp"
+                android:text="Similar Products"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/details_barrier" />
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/similarProductsRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="200dp"
+                android:orientation="horizontal"
+                android:paddingBottom="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/similarProductsTitle"
+                tools:listitem="@layout/item_product1" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!-- Shimmer for Product Details -->
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/product_details_shimmer_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:shimmer_duration="2000"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-            <include layout="@layout/product_details_shimmer" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/details_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="priceAndCartLayout,product_details_shimmer_layout" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cart_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="Navigate to Cart"
+        android:src="@drawable/ic_cart_outlined"
+        app:backgroundTint="@color/md_theme_primary"
+        app:tint="@color/md_theme_onPrimary" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/productShimmerRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:padding="8dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/similarProductsTitle"
-            app:shimmer_duration="2000">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shimmerRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:spanCount="2"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_product1_shimmer" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-        <!-- Similar Products Title -->
-        <TextView
-            android:id="@+id/similarProductsTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@color/md_theme_primary"
-            android:padding="10dp"
-            android:text="Similar Products"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/details_barrier"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/similarProductsRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="200dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/similarProductsTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingBottom="16dp"
-            tools:listitem="@layout/item_product1" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,7 +1,11 @@
 package dev.mo.surfcart.product_details.ui
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,11 +24,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.R
+import dev.mo.surfcart.cart.ui.CartFragment
 import dev.mo.surfcart.cart.ui.CartViewModel
 import dev.mo.surfcart.core.UiEvent
 import dev.mo.surfcart.core.entity.Product
@@ -70,6 +76,9 @@ class ProductDetailsFragment : Fragment() {
         binding.addToCartButton.setOnClickListener {
             cartViewModel.addToCart(args.productId.toInt())
         }
+        binding.cartFab.setOnClickListener {
+            findNavController().navigate(R.id.cartFragment)
+        }
     }
 
     private fun observeViewModel() {
@@ -85,8 +94,7 @@ class ProductDetailsFragment : Fragment() {
             findNavController().navigate(action)
         }
         binding.similarProductsRecyclerView.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
             adapter = similarProductsAdapter
         }
     }
@@ -147,8 +155,19 @@ class ProductDetailsFragment : Fragment() {
         binding.categoryDetailsContainer.removeAllViews()
         val context = requireContext()
         details.forEach { (key, value) ->
+            val keyText = "$key: "
+            val fullText = keyText + value
+            val spannable = SpannableString(fullText)
+
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                keyText.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
             val attributeTextView = TextView(context).apply {
-                text = "$key: $value"
+                text = spannable
                 textSize = 14f
                 val params = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -166,16 +185,18 @@ class ProductDetailsFragment : Fragment() {
         binding.apply {
             if (isLoading) {
                 productDetailsShimmerLayout.startShimmer()
-                productShimmerRv.startShimmer()
+                similarProductsShimmerLayout.startShimmer()
                 productDetailsShimmerLayout.visibility = View.VISIBLE
-                productShimmerRv.visibility = View.VISIBLE
+                similarProductsShimmerLayout.visibility = View.VISIBLE
                 addToCartButton.visibility = View.GONE
+                productThumbnail.visibility = View.GONE
             } else {
                 productDetailsShimmerLayout.stopShimmer()
-                productShimmerRv.stopShimmer()
+                similarProductsShimmerLayout.stopShimmer()
                 productDetailsShimmerLayout.visibility = View.GONE
-                productShimmerRv.visibility = View.GONE
+                similarProductsShimmerLayout.visibility = View.GONE
                 addToCartButton.visibility = View.VISIBLE
+                productThumbnail.visibility = View.VISIBLE
             }
         }
     }
@@ -189,8 +210,7 @@ class ProductDetailsFragment : Fragment() {
         params.gravity = Gravity.TOP
 
         val topInset = ViewCompat.getRootWindowInsets(requireActivity().window.decorView)
-            ?.getInsets(WindowInsetsCompat.Type.statusBars())
-            ?.top ?: 0
+            ?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
         params.topMargin = topInset
 
         view.layoutParams = params

@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentCartBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,8 +41,7 @@ class CartFragment : Fragment() {
             onItemDecrement = cartViewModel::decreaseQuantity
         )
         cartItemRecyclerView.adapter = cartItemsAdapter
-        binding.emptyCartView.visibility = if (cartViewModel.cartItems.value.isEmpty()) View.VISIBLE else View.GONE
-        binding.checkoutButton.visibility = if (cartViewModel.cartItems.value.isEmpty()) View.GONE else View.VISIBLE
+
         binding.checkoutButton.setOnClickListener {
             navigateToCheckout()
         }
@@ -62,6 +65,8 @@ class CartFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             cartViewModel.cartItems.collect {
                 cartItemsAdapter.updateCartItems(it)
+                binding.emptyCartView.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+                binding.checkoutButton.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
             }
         }
     }
