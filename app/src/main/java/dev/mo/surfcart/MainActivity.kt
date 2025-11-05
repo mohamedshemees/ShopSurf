@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity() {
                     is MainViewModel.MainUiState.ShowLogin -> {
                       //  binding.progressbar.visibility = View.GONE
                         initViews(false)
+                    }
+                    is MainViewModel.MainUiState.UpdateAppTheme -> {
+
                     }
                 }
             }

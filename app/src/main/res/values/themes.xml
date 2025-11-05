@@ -8,6 +8,9 @@
     <style name="Theme.Surfcart" parent="AppTheme" />
 
 <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
+    <item name="android:windowAnimationStyle">@style/FadeActivityTransition</item>
+    <item name="android:windowDisablePreview">true</item>
+
     <item name="colorPrimary">@color/md_theme_primary</item>
     <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
     <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
@@ -56,4 +59,11 @@
     <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
 </style>
 
+
+    <style name="FadeActivityTransition">
+        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>
