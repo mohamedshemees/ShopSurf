@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.ItemCheckoutProductBinding
+import dev.mo.surfcart.databinding.ItemSearchResultBinding
 
 class SearchAdapter(
     private val onProductClick: (productId: Long) -> Unit
@@ -15,13 +16,12 @@ class SearchAdapter(
     private var products = listOf<Product>()
 
     inner class SearchViewHolder(
-        private val binding: ItemCheckoutProductBinding
+        private val binding: ItemSearchResultBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
             with(binding) {
                 productName.text = product.productName
-                productName.text = product.productDescription
                 productPrice.text = "$${product.rating}"
 
                 Glide.with(root.context)
@@ -35,7 +35,7 @@ class SearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        val binding = ItemCheckoutProductBinding.inflate(
+        val binding = ItemSearchResultBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

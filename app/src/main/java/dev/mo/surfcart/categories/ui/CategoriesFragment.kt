@@ -57,7 +57,7 @@ class CategoriesFragment : Fragment() {
         binding.carouselShimmerLayout.startShimmer()
         binding.categoryShimmerLayout.startShimmer()
         binding.productShimmerLayout.startShimmer()
-        
+
         categoriesViewModel.loadInitial(categoryId)
 
         viewLifecycleOwner.lifecycleScope.launch {

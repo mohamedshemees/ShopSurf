@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- Product Thumbnail -->
+    <View
+        android:id="@+id/productThumbnailShimmer"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Title -->
+    <View
+        android:id="@+id/productTitleShimmer"
+        android:layout_width="0dp"
+        android:layout_height="20sp"
+        android:layout_marginTop="12dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/productThumbnailShimmer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Description -->
+    <View
+        android:id="@+id/productDescriptionShimmer"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="8dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/productTitleShimmer"
+        app:layout_constraintStart_toStartOf="@id/productTitleShimmer"
+        app:layout_constraintEnd_toEndOf="@id/productTitleShimmer" />
+
+    <!-- Price and Add to Cart -->
+    <View
+        android:id="@+id/productShimmer"
+        android:layout_width="80dp"
+        android:layout_height="24sp"
+        android:layout_marginTop="12dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/productDescriptionShimmer"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/addToCartButtonShimmer"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:background="#E0E0E0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/productShimmer"
+        app:layout_constraintBottom_toBottomOf="@+id/productShimmer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

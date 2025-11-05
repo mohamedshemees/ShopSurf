@@ -20,10 +20,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.tbuonomo.viewpagerdotsindicator.pxToDp
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.R
 import dev.mo.surfcart.cart.ui.CartViewModel
@@ -31,6 +30,7 @@ import dev.mo.surfcart.core.UiEvent
 import dev.mo.surfcart.core.entity.Product
 import dev.mo.surfcart.databinding.FragmentProductDetailsBinding
 import dev.mo.surfcart.products.ui.ProductAdapter
+import dev.mo.surfcart.products.ui.ProductShimmerAdapter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,6 +44,7 @@ class ProductDetailsFragment : Fragment() {
     private val args: ProductDetailsFragmentArgs by navArgs()
 
     private lateinit var similarProductsAdapter: ProductAdapter
+    private lateinit var similarProductsShimmerAdapter: ProductShimmerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,13 +56,24 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
+        initListeners()
+        observeViewModel()
+    }
 
-        val productId = args.productId
-
+    private fun initViews() {
         setupSimilarProductsRecyclerView()
-        setupClickListeners(productId)
+        setupSimilarProductsShimmerRecyclerView()
+    }
 
-        productDetailsViewModel.loadProductData(productId)
+    private fun initListeners() {
+        binding.addToCartButton.setOnClickListener {
+            cartViewModel.addToCart(args.productId.toInt())
+        }
+    }
+
+    private fun observeViewModel() {
+        productDetailsViewModel.loadProductData(args.productId)
         observeUiState()
         observeUiEvents()
     }
@@ -74,14 +86,17 @@ class ProductDetailsFragment : Fragment() {
         }
         binding.similarProductsRecyclerView.apply {
             layoutManager =
-                GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = similarProductsAdapter
         }
     }
 
-    private fun setupClickListeners(productId: Long) {
-        binding.addToCartButton.setOnClickListener {
-            cartViewModel.addToCart(productId.toInt())
+    private fun setupSimilarProductsShimmerRecyclerView() {
+        similarProductsShimmerAdapter = ProductShimmerAdapter()
+        binding.shimmerRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = similarProductsShimmerAdapter
         }
     }
 
@@ -89,7 +104,7 @@ class ProductDetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 productDetailsViewModel.uiState.collect { state ->
-                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                    toggleShimmer(state.isLoading)
                     if (!state.isLoading) {
                         state.product?.let { product -> bindProductData(product) }
                         populateProductDetails(state.productDetails)
@@ -147,6 +162,24 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
+    private fun toggleShimmer(isLoading: Boolean) {
+        binding.apply {
+            if (isLoading) {
+                productDetailsShimmerLayout.startShimmer()
+                productShimmerRv.startShimmer()
+                productDetailsShimmerLayout.visibility = View.VISIBLE
+                productShimmerRv.visibility = View.VISIBLE
+                addToCartButton.visibility = View.GONE
+            } else {
+                productDetailsShimmerLayout.stopShimmer()
+                productShimmerRv.stopShimmer()
+                productDetailsShimmerLayout.visibility = View.GONE
+                productShimmerRv.visibility = View.GONE
+                addToCartButton.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun showTopSnackbar(message: String, isError: Boolean) {
         val snackbar = Snackbar.make(requireActivity().findViewById(R.id.main_activity), message, Snackbar.LENGTH_SHORT)
 
@@ -162,7 +195,6 @@ class ProductDetailsFragment : Fragment() {
 
         view.layoutParams = params
 
-        // Style it
         val color = ContextCompat.getColor(
             requireContext(),
             if (isError) R.color.md_theme_error else R.color.md_theme_success
@@ -173,10 +205,10 @@ class ProductDetailsFragment : Fragment() {
         snackbar.show()
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding.similarProductsRecyclerView.adapter = null
+        binding.shimmerRecyclerView.adapter = null
         _binding = null
     }
 }
