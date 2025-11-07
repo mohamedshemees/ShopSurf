@@ -11,8 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.mo.surfcart.R
 import dev.mo.surfcart.databinding.FragmentLogInBinding
 import kotlinx.coroutines.launch
 
@@ -77,9 +79,13 @@ class LoginFragment : Fragment() {
                 viewModel.uiState.collect { state ->
                     when (state) {
                         is LogInUiState.Success -> {
-                            Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
-                          val action= LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                           findNavController().navigate(action)
+                            Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT)
+                                .show()
+                            val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                            val navOptions = NavOptions.Builder()
+                                .setPopUpTo(R.id.loginFragment, true)
+                                .build()
+                            findNavController().navigate(action, navOptions)
                             binding.btnLogin.isEnabled = true
                         }
                         is LogInUiState.Error -> {
