@@ -1,9 +1,4 @@
 <resources>
-<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
-<!--    <style name="Base.Theme.Surfcart" parent="Theme.Material3.DayNight.NoActionBar">-->
-
-<!--&lt;!&ndash;         <item name="colorPrimary">@color/cardview_shadow_start_color</item> &ndash;&gt;-->
-<!--    </style>-->
 
     <style name="Theme.Surfcart" parent="AppTheme" />
 

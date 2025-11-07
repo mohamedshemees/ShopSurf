@@ -5,14 +5,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#5397F0</color>
     <color name="lightGray">#BFBFBF</color>
-    <color name="chip_background_default">#E0E0E0</color> <!-- Unselected -->
-    <color name="chip_background_selected">#BBDEFB</color> <!-- Selected -->
-    <color name="chip_stroke">#757575</color> <!-- Border -->
-    <color name="chip_text_default">#212121</color> <!-- Unselected text -->
-    <color name="chip_text_selected">#1976D2</color> <!-- Selected text -->
-
     <color name="light_blue">#DBEAFE</color>
-    <color name="dark_scrim">#80000000</color> <!-- Added for image overlays -->
+    <color name="dark_scrim">#80000000</color> 
 
     <color name="md_theme_primary">#365E9D</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
