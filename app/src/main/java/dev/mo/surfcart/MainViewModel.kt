@@ -20,7 +20,6 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-
         viewModelScope.launch {
             val loggedIn = checkIfLoggedInUseCase()
             _state.update {
@@ -30,10 +29,9 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch {
             settingsRepository.getCurrentTheme().collect { isDarkTheme ->
-                    AppCompatDelegate.setDefaultNightMode(
-                        if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES
-                        else AppCompatDelegate.MODE_NIGHT_NO
-                    )
+                    _state.update {
+                        MainUiState.UpdateAppTheme(isDarkTheme)
+                    }
                 }
             }
         }

@@ -23,7 +23,7 @@ class ChipCategoriesAdapter(
         fun bind(category: Category, position: Int) {
             name.text = category.name
             Glide.with(itemView).load(category.categoryThumbnail).into(icon)
-            chipItem.root.setBackgroundResource(R.drawable.chip_bg_selector)
+            //chipItem.root.setBackgroundResource(R.drawable.chip_bg_selector)
             chipItem.root.isSelected = position == selectedPosition
 
             chipItem.root.setOnClickListener {

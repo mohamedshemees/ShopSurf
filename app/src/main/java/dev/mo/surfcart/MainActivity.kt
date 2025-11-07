@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.ActivityMainBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         handleWindowInsets()
         lifecycleScope.launch {
-            viewModel.state.collect { state ->
+            viewModel.state.collectLatest { state ->
                 when (state) {
                     is MainViewModel.MainUiState.Loading -> {}
                     is MainViewModel.MainUiState.ShowHome -> {
@@ -42,7 +44,10 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     is MainViewModel.MainUiState.UpdateAppTheme -> {
-
+                        AppCompatDelegate.setDefaultNightMode(
+                            if (state.theme) AppCompatDelegate.MODE_NIGHT_YES
+                            else AppCompatDelegate.MODE_NIGHT_NO
+                        )
                     }
                 }
             }

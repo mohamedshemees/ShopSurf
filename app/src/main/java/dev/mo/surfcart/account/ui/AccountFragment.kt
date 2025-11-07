@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.databinding.FragmentAccountBinding
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
@@ -29,9 +31,12 @@ class AccountFragment : Fragment() {
             val action = AccountFragmentDirections.actionAccountFragmentToLoginFragment()
             findNavController().navigate(action)
         }
-        binding.themeSwitch.isChecked = viewModel.isDarkMode.value
+        lifecycleScope.launch {
+            viewModel.isDarkMode.collect {
+            binding.themeSwitch.isChecked = it
+        }}
 
-        binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.themeSwitch.setOnClickListener { _ ->
                 viewModel.enableDarkMode()
         }
     }
