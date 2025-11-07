@@ -15,7 +15,7 @@
             android:id="@+id/product_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingVertical="16dp">
 
             <!-- Shimmer for Product Details -->
             <com.facebook.shimmer.ShimmerFrameLayout
