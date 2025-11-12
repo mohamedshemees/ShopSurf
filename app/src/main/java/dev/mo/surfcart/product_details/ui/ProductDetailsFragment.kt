@@ -27,10 +27,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mo.surfcart.R
-import dev.mo.surfcart.cart.ui.CartFragment
 import dev.mo.surfcart.cart.ui.CartViewModel
 import dev.mo.surfcart.core.UiEvent
 import dev.mo.surfcart.core.entity.Product
@@ -77,7 +77,8 @@ class ProductDetailsFragment : Fragment() {
             cartViewModel.addToCart(args.productId.toInt())
         }
         binding.cartFab.setOnClickListener {
-            findNavController().navigate(R.id.cartFragment)
+            (activity?.findViewById(R.id.bottomNavigationView) as? BottomNavigationView)?.selectedItemId =
+                R.id.cartFragment
         }
     }
 
@@ -94,7 +95,8 @@ class ProductDetailsFragment : Fragment() {
             findNavController().navigate(action)
         }
         binding.similarProductsRecyclerView.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
             adapter = similarProductsAdapter
         }
     }
@@ -132,8 +134,15 @@ class ProductDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cartViewModel.uiEvent.collect { event ->
                     when (event) {
-                        is UiEvent.ShowSuccessSnackbar -> showTopSnackbar(event.message, isError = false)
-                        is UiEvent.ShowErrorSnackbar -> showTopSnackbar(event.message, isError = true)
+                        is UiEvent.ShowSuccessSnackbar -> showTopSnackbar(
+                            event.message,
+                            isError = false
+                        )
+
+                        is UiEvent.ShowErrorSnackbar -> showTopSnackbar(
+                            event.message,
+                            isError = true
+                        )
                     }
                 }
             }
@@ -202,7 +211,11 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun showTopSnackbar(message: String, isError: Boolean) {
-        val snackbar = Snackbar.make(requireActivity().findViewById(R.id.main_activity), message, Snackbar.LENGTH_SHORT)
+        val snackbar = Snackbar.make(
+            requireActivity().findViewById(R.id.main_activity),
+            message,
+            Snackbar.LENGTH_SHORT
+        )
 
         val view = snackbar.view
         val params = view.layoutParams as FrameLayout.LayoutParams

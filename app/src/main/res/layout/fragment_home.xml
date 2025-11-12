@@ -87,20 +87,18 @@
             android:id="@+id/categoryRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="400dp"
-            android:layout_marginVertical="8dp"
+            android:minHeight="300dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/dotIndicator"
             app:spanCount="2"
-            tools:itemCount="4"
+            tools:itemCount="8"
             tools:listitem="@layout/item_category" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/categoryshimmerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/dotIndicator"
             app:shimmer_duration="2000">
@@ -111,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="visible"
-                android:layout_marginVertical="20dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
                 tools:itemCount="4"

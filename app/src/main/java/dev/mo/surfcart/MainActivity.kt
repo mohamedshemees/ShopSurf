@@ -24,57 +24,42 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     private val viewModel: MainViewModel by viewModels()
+    private var isGraphInitialized = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
         handleWindowInsets()
-        lifecycleScope.launch {
-            viewModel.state.collectLatest { state ->
-                when (state) {
-                    is MainViewModel.MainUiState.Loading -> {}
-                    is MainViewModel.MainUiState.ShowHome -> {
-                        initViews(true)
-                    }
 
-                    is MainViewModel.MainUiState.ShowLogin -> {
-                        initViews(false)
-                    }
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_content_main) as NavHostFragment
+        navController = navHostFragment.navController
 
-                    is MainViewModel.MainUiState.UpdateAppTheme -> {
-                        AppCompatDelegate.setDefaultNightMode(
-                            if (state.theme) AppCompatDelegate.MODE_NIGHT_YES
-                            else AppCompatDelegate.MODE_NIGHT_NO
-                        )
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        if (!isGraphInitialized) {
+            lifecycleScope.launch {
+                viewModel.state.collectLatest { state ->
+                    when (state) {
+                        is MainViewModel.MainUiState.ShowHome -> {
+                            setGraph(true)
+                        }
+                        is MainViewModel.MainUiState.ShowLogin -> {
+                            setGraph(false)
+                        }
+                        is MainViewModel.MainUiState.UpdateAppTheme -> {
+                            AppCompatDelegate.setDefaultNightMode(
+                                if (state.theme) AppCompatDelegate.MODE_NIGHT_YES
+                                else AppCompatDelegate.MODE_NIGHT_NO
+                            )
+                        }
+                        else -> {}
                     }
                 }
             }
         }
-
-    }
-
-    private fun handleWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            insets
-        }
-    }
-
-    private fun initViews(isLoggedIn: Boolean) {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fragment_content_main) as NavHostFragment
-        navController = navHostFragment.navController
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.setStartDestination(
-            if (isLoggedIn) R.id.homeFragment
-            else R.id.loginFragment
-        )
-        navController.graph = navGraph
-        navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -85,11 +70,24 @@ class MainActivity : AppCompatActivity() {
                 R.id.checkoutFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
-
-                else -> {
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                }
+                else -> binding.bottomNavigationView.visibility = View.VISIBLE
             }
         }
     }
-}
+    private fun handleWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
+    }
+    private fun setGraph(isLoggedIn: Boolean) {
+        if (isGraphInitialized) return
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(
+            if (isLoggedIn) R.id.homeFragment else R.id.loginFragment
+        )
+        navController.graph = navGraph
+        isGraphInitialized = true
+    }
+    }

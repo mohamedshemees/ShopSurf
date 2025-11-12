@@ -3,6 +3,7 @@ package dev.mo.surfcart.account.data.dto
 import dev.mo.surfcart.account.domain.repository.AccountRepository
 import dev.mo.surfcart.checkout.ui.PaymentMethodItem
 import dev.mo.surfcart.core.safeSupabaseCall
+import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -10,7 +11,8 @@ import java.util.UUID
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
-    private val postgrest: Postgrest
+    private val postgrest: Postgrest,
+    private val supaAuth: Auth
 ) : AccountRepository {
     override suspend fun getCustomerAddresses(): List<CustomerAddress> {
         return safeSupabaseCall {
@@ -27,14 +29,23 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUserData(): String {
+        return safeSupabaseCall {
+            supaAuth.currentUserOrNull()?.email ?: ""
+        }
+
+    }
+
     override suspend fun placeOrder(addressId: UUID, paymentMethodId: UUID) {
         return safeSupabaseCall {
-            postgrest.rpc("place_order",
-            JsonObject(
-                mapOf("address_id" to JsonPrimitive(addressId.toString()),
-                "payment_method_id" to JsonPrimitive(paymentMethodId.toString())
-                ),
-            )
+            postgrest.rpc(
+                "place_order",
+                JsonObject(
+                    mapOf(
+                        "address_id" to JsonPrimitive(addressId.toString()),
+                        "payment_method_id" to JsonPrimitive(paymentMethodId.toString())
+                    ),
+                )
             )
         }
     }

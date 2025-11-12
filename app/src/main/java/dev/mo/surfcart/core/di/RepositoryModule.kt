@@ -38,13 +38,14 @@ object RepositoryModule {
     @Singleton
     fun provideAccountRepository(
         postgres: Postgrest,
-    ): AccountRepository = AccountRepositoryImpl( postgres)
+        auth: Auth,
+    ): AccountRepository = AccountRepositoryImpl( postgres,auth)
 
     @Provides
     @Singleton
     fun provideAuthRepository(
-        postgres: Auth,
-    ): AuthRepository = AuthRepoImpl(postgres)
+        auth: Auth,
+    ): AuthRepository = AuthRepoImpl(auth)
 
     @Provides
     @Singleton

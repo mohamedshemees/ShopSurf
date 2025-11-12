@@ -7,6 +7,8 @@ import java.util.UUID
 interface AccountRepository {
     suspend fun getCustomerAddresses(): List<CustomerAddress>
     suspend fun getPaymentMethods(): List<PaymentMethodItem>
+    suspend fun getUserData(): String
+
     suspend fun placeOrder(
         addressId: UUID,
         paymentMethodId: UUID

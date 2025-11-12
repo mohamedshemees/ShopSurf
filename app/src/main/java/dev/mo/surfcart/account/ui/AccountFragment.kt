@@ -32,12 +32,24 @@ class AccountFragment : Fragment() {
             findNavController().navigate(action)
         }
         lifecycleScope.launch {
+            viewModel.accountUiState.collect {
+                when (it) {
+                    is AccountUiState.Ready -> {
+                        binding.userName.text = it.userName
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+        lifecycleScope.launch {
             viewModel.isDarkMode.collect {
-            binding.themeSwitch.isChecked = it
-        }}
+                binding.themeSwitch.isChecked = it
+            }
+        }
 
         binding.themeSwitch.setOnClickListener { _ ->
-                viewModel.enableDarkMode()
+            viewModel.enableDarkMode()
         }
     }
 }
