@@ -68,17 +68,17 @@
             app:layout_constraintTop_toBottomOf="@id/search_container" >
             <include layout="@layout/item_banner_shimmer"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
+
         <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/dotIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="160dp"
             app:dotsColor="@color/lightGray"
             app:dotsCornerRadius="8dp"
-            app:dotsSize="6dp"
-            app:dotsSpacing="2dp"
+            app:dotsSize="8dp"
+            app:dotsSpacing="3dp"
             app:dotsWidthFactor="2.5"
-            app:layout_constraintBottom_toBottomOf="@+id/bannerVp"
+            app:layout_constraintTop_toBottomOf="@+id/bannerVp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:selectedDotColor="@color/blue"
@@ -144,14 +144,13 @@
             android:id="@+id/shimmerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:padding="8dp"
+
             android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/on_sale_header"
             app:shimmer_duration="2000">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/shimmerRecyclerView"
+                android:id="@+id/productShimmerRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

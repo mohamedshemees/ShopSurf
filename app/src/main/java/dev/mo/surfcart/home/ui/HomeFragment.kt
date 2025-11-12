@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
 
     private fun setupOnSaleProductsShimmerRecyclerView() {
         onSaleProductsShimmerAdapter = ProductShimmerAdapter()
-        binding.shimmerRecyclerView.apply {
+        binding.productShimmerRecyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
             adapter = onSaleProductsShimmerAdapter
         }

@@ -42,7 +42,7 @@
             <View
                 android:id="@+id/gradient_overlay"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/gradient_overlay_drawable"
                 android:visibility="visible" />

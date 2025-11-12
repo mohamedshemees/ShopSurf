@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <com.google.android.material.carousel.MaskableFrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/carousel_item_container"
+<com.google.android.material.carousel.MaskableFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/carousel_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
+
+    <!-- Category Image -->
+    <ImageView
+        android:id="@+id/carousel_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:foreground="?attr/selectableItemBackground"
-        app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:contentDescription="" />
 
-        <ImageView
-            android:id="@+id/carousel_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_overlay_drawable" />
     <TextView
         android:id="@+id/category_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:padding="8dp"
-        android:text="wwwwwww"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="10dp"
+        android:text="Category"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:background="@color/dark_scrim" />
-
+        android:textStyle="bold"
+        android:shadowColor="#AA000000"
+        android:shadowRadius="6"
+        android:elevation="2dp" />
 </com.google.android.material.carousel.MaskableFrameLayout>

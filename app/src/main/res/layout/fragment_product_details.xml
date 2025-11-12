@@ -117,31 +117,16 @@
                 app:layout_constraintTop_toBottomOf="@id/categoryDetailsContainer"
                 app:rippleColor="@color/md_theme_primaryContainer" />
 
-            <!-- Barrier to position Similar Products section correctly -->
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/details_barrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="addToCartButton,productPrice,product_details_shimmer_layout" />
 
-            <!-- Shimmer for Similar Products Section -->
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/similar_products_shimmer_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/details_barrier"
+                app:layout_constraintTop_toBottomOf="@id/similarProductsTitle"
                 app:shimmer_duration="2000">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Shimmer for RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/shimmerRecyclerView"
                         android:layout_width="match_parent"
@@ -151,7 +136,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_product1_shimmer" />
-                </LinearLayout>
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -169,7 +153,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/details_barrier" />
+                app:layout_constraintTop_toBottomOf="@id/addToCartButton" />
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
